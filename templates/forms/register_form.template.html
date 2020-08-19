@@ -1,0 +1,51 @@
+<div>
+    <label> Full Name</label>
+    <input type="text" name="name" class="form-control {% if 'invalid_name' in errors %} is-invalid {% endif %}" value="{{previous_values.Full_Name}}">
+    {% if 'invalid_name' in errors %}
+    <div class="invalid-feedback">
+        {{errors.invalid_name}}
+    </div>
+    {%endif%}
+</div>
+<div>
+    <label> Email</label>
+    <input type="text" name="email" class="form-control {% if 'invalid_email' in errors or 'invalid_email_and_username' in errors %} is-invalid {% endif %}" value="{{previous_values.Email}}">
+    {% if 'invalid_email' in errors or 'invalid_email_and_username' in errors %}
+    <div class="invalid-feedback">
+        {{errors.invalid_email or errors.invalid_email_and_username}}
+    </div>
+    {% endif %}
+</div>
+<div>
+    <label>Date of Birth</label>
+    <input type="date" name="dob" class="form-control" value= "{{previous_values.Date_Of_Birth}}">
+</div>
+<div>
+    <label> Country </label>
+    <input type="text" name="country" class="form-control" value="{{previous_values.Country}}">
+</div>
+<div>
+    <label> Username </label>
+    <input type="text" name="username" class="form-control {% if 'invalid_username' in errors or 'invalid_email_and_username' in errors %} is-invalid {% endif %}" value="{{previous_values.Username}}">
+    {% if 'invalid_username' in errors or 'invalid_email_and_username' in errors %}
+    <div class="invalid-feedback">
+        {{errors.invalid_username or errors.invalid_email_and_username}}
+    </div>
+    {% endif %}
+</div>
+<div>
+    <label> Password </label>
+    <input type="password" name="password" class="form-control" value="{{previous_values.Password}}">
+</div>
+<div>
+    <label>Security Question </label>
+    <select name="SecurityQuestion" class="form-control" > 
+    {% for each_question in questions %}
+        <option value="{{each_question}}" {%if each_question == previous_values.SecurityQuestion %} selected {%endif%}>{{each_question}}</option>
+    {% endfor %}
+    </select>
+</div>
+<div>
+    <label> Security Answer </label>
+    <input type="text" name="SecurityAnswer" class="form-control" value="{{previous_values.SecurityAnswer}}">
+</div>
