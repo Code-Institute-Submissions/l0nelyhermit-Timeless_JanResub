@@ -1,0 +1,15 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+
+    <h3>Updating Account : {{current_user.Username}} {{current_user.AccountID}}</h3>
+
+    <form method="POST">
+        {% with %}
+            {% set previous_values=current_user %}
+            {% include 'forms/register_form.template.html' %}
+        {% endwith %}
+        <input type="submit" value="update" class="btn btn-primary"/>
+        <a href="{{url_for('home')}}" class="btn btn-success"> Cancel</a>
+    </form>
+{% endblock %}
