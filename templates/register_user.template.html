@@ -1,0 +1,20 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+    <ul>
+    {% for key, each_error in errors.items() %}
+        <li>{{each_error}}</li>
+    {% endfor %}
+    </ul>
+
+    <form method="POST">
+        {%with%}
+            {% if not previous_values %}
+                {% set previous_values = {} %}
+            {% endif %}
+
+            {% include 'forms/register_form.template.html' %}
+            <input type="submit" value="register" class="btn btn-primary">
+        {% endwith %}
+    </form>
+{% endblock %}
