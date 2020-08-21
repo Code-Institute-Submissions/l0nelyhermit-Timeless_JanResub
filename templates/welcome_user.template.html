@@ -1,7 +1,42 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-<a href="{{ url_for('register_user') }}" class="btn btn-success btn-lg">Register</a>
-<a href="{{ url_for('login_user') }}" class="btn btn-success btn-lg">Login</a>
-
+<div id="background-holder">
+    <div class="jumbotron jumbotron-fluid" id="content-display">
+      <h1 class= "title-text">TIMELESS</h1>
+      <p class="sub-header-quote">Home Of The Watches Community</p>
+        <div class="container-fluid" id="button-control" >
+                <div class="container-fluid" id="button-area">
+                    <button type="button" class="btn btn-danger btn-rounded btn-lg mr-5" id="login-button">LOGIN</button> 
+                    <button type="button" class="btn btn-danger btn-rounded btn-lg mr-3" id="register-button" onclick="window.location.href='{{url_for('register_user')}}'">REGISTER</button>
+                </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="login-form-hidden">
+        <form method="POST">
+            <h2 class="form-title-text">SIGN IN TO YOUR ACCOUNT</h2>
+            <div class="form-group">
+                <label class="control-label" for="email" id="form-labels">
+                    EMAIL
+                </label>
+                <div class="input-group input-group-lg" id="form-fields">
+                  <div class="input-group-prepend"><i class="input-group-text fa fa-user"></i></div>
+                  <input type="text" class="form-control" placeholder="Enter Email Address" name="email">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password" id="form-labels">
+                    PASSWORD
+                </label>
+                <div class="input-group input-group-lg" id="form-fields"> 
+                  <span class="input-group-prepend"><i class="input-group-text fa fa-lock"></i></span>
+                  <input type="password" class="form-control" placeholder="Enter Password" name="password">
+                </div>
+            </div>
+            <div class="form-group" id="submit-area">
+                <input type="submit" value="LOGIN" class="btn btn-success btn-lg" id="submit-button">
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

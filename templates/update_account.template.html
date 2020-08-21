@@ -2,11 +2,11 @@
 
 {% block content %}
 
-    <h3>Updating Account : {{current_user.Username}} {{current_user.AccountID}}</h3>
+    <h3>Updating Account : {{current_user.username}} {{current_user_logged_in.AccountID}}</h3>
 
     <form method="POST">
         {% with %}
-            {% set previous_values=current_user %}
+            {% set previous_values=current_user_logged_in %}
             {% include 'forms/register_form.template.html' %}
         {% endwith %}
         <input type="submit" value="update" class="btn btn-primary"/>

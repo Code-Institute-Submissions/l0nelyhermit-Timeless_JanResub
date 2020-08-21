@@ -1,0 +1,29 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div>
+    Current User Logged In Email :{{current_user.id}}
+</div>
+<div>
+    Current User Logged In Username : {{current_user.username}}
+</div>
+<div>
+    Full Name : {{current_profile.Full_Name}}
+</div>
+<div>
+    Date Joined : {{current_profile.Date_Joined.strftime("%Y-%m-%d")}}
+</div>
+<div>
+    Bio : {{current_profile.Bio}}
+</div>
+<div>
+    country: {{current_profile.Country}}
+</div>
+<div>
+    DOB: {{current_profile.Date_Of_Birth.strftime("%Y-%m-%d")}}
+</div>
+
+<a href="{{ url_for('edit_user_profile') }}" class="btn btn-success btn-lg">Edit Profile</a>
+{% endif %}
+{% endblock %}
