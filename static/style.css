@@ -1,0 +1,101 @@
+body{
+    padding:0;
+    margin:0;
+}
+
+#background-holder{
+    height:100vh;
+    background-image: url(../static/images/watch_background.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.jumbotron{
+    background-color: transparent !important;
+}
+#content-display{
+    flex-direction:  column;
+}
+
+.title-text{
+    font-family: Verdana,sans-serif;
+    font-size: 12em;
+    font-weight: 700;
+    color: #f5f5f5;
+    text-align: center;
+    text-shadow: 1px 1px 1px #919191,
+    1px 2px 1px #919191,
+        1px 3px 1px #919191,
+        1px 4px 1px #919191,
+        1px 5px 1px #919191,
+        1px 6px 1px #919191, 
+        1px 7px 1px #919191,
+        1px 8px 1px #919191,
+        1px 9px 1px #919191,
+        1px 10px 1px #919191,
+    1px 18px 6px rgba(16,16,16,0.4),
+    1px 22px 10px rgba(16,16,16,0.2),
+    1px 25px 35px rgba(16,16,16,0.2),
+    1px 30px 60px rgba(16,16,16,0.4);
+
+}
+
+.sub-header-quote{
+    font-family: Georgia,serif;
+    text-align: center;
+    font-weight:700;
+    font-size:6em;
+    color: white;
+}
+
+#button-control{
+    display:flex;
+    justify-content: center;
+    flex-direction: row;
+    padding:0;
+}
+
+#button-area{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+
+
+#login-form-hidden{
+    width:70%;
+    height:35vh;
+    display:none;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.form-title-text{
+    margin-top: 10px;
+    text-align:center;
+    font-family: Martel Sans, sans-serif;
+    font-weight:bold;
+}
+
+#form-labels{
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+}
+
+#form-fields{
+    border-radius: 30px;
+}
+
+#submit-area{
+    display: flex;
+    justify-content: center;
+}
