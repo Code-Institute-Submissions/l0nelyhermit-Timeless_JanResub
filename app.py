@@ -23,13 +23,17 @@ DB_NAME = "Timeless"
 client = pymongo.MongoClient(MONGO_URI)
 db = client[DB_NAME]
 
+ # Instance Variable for the Maximum Number Of Users for the site
+max_capacity_users = 9999
+
+
 class User(flask_login.UserMixin):
     pass
 
 # Initialise the flask-login for the Flask App
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
-# login_manager.login_view = 'login_user'
+login_manager.login_view = 'login_user'
 login_manager.refresh_view = 'login_user'
 login_manager.needs_refresh_message = (
     u"To protect your account, please reauthenticate to access this page."
@@ -83,6 +87,7 @@ def register_user():
         securityquestion = request.form.get('SecurityQuestion')
         securityanswer = request.form.get('SecurityAnswer')
         
+        
         # Form Field Validation
         # Error Accumulator Collector
         errors = {}
@@ -96,11 +101,11 @@ def register_user():
         # Check if the User already exists in the database
         elif database_error == False:
             username_check = db.Users.find_one({
-            'Username': username
+                'Username': username
             })
             # Check if user entered an email that exists in database
             email_check = db.Users.find_one({
-                    'Email': email
+                'Email': email
             })
             # SCENARIOS:
             # 1. If user enters same username as another exisitng user, raise error
@@ -116,91 +121,93 @@ def register_user():
                         flash('Error: Email has already been used, please try again with another valid email','danger')
                         errors.update(invalid_email="Email has already been used, please enter a valid email")
                         database_error = True
-                    else:
+
                         if len(errors) > 0:
                             flash("Registration Failure",'danger')
                             return render_template('register_user.template.html',questions=all_security_questions,
-                                                        errors=errors)
-                        else:
-                            #  No errors in registration, proceed with registration
-                            # Create a new account and new profile for the user
-                        
-                            # Instance Variable for the Maximum Number Of Users for the site
-                            max_capacity_users = 9999
-                            # Issues a random ID number for the account ID
-                            number = random.randint(0, max_capacity_users)
+                                                errors=errors)
+                else:
+                    if len(errors) > 0:
+                        flash("Registration Failure",'danger')
+                        return render_template('register_user.template.html',questions=all_security_questions,
+                                                errors=errors)
+                    else:
+                        # No errors in registration, proceed with registration
+                        # Create a new account and new profile for the user
+                        # Issues a random ID number for the account ID that is unique and not repeated
+                        account_number_list = list(range(1,max_capacity_users))
+                        random.shuffle(account_number_list)
+                        number = account_number_list.pop()
+                        # Issues a random ID number for the profile ID that is unique and not repeated
+                        profile_number_list = list(range(1,max_capacity_users))
+                        random.shuffle(profile_number_list)
+                        profileID = profile_number_list.pop()
 
-                            # Issues a random ID number for the profile ID
-                            profileID = random.randint(0,max_capacity_users)
+                        new_user = {
+                            'AccountID': number,
+                            'Full_Name': fname,
+                            'Email': email,
+                            'Date_Of_Birth': datetime.datetime.strptime(dob, "%Y-%m-%d"),
+                            'Country': country,
+                            'Username': username,
+                            'Password': pbkdf2_sha256.hash(password),
+                            'SecurityQuestion': securityquestion,
+                            'SecurityAnswer': securityanswer
+                        }
 
-                            new_user = {
-                                'AccountID': number,
+                        # Using Flags Technique, if account can be successfully created, proceed with profile creation
+
+                        create_account_success = False
+                        try:
+                            db.Users.insert_one(new_user)
+                            create_account_success = True
+                        except Exception as e:
+                            return str(e)
+
+                        if create_account_success == True:
+                            # extra variables for profile
+                            bio = ''
+                            datejoined = datetime.datetime.now()
+                            new_profile = {
+                                'ProfileID':profileID,
+                                'AccountID': new_user,
                                 'Full_Name': fname,
                                 'Email': email,
                                 'Date_Of_Birth': datetime.datetime.strptime(dob, "%Y-%m-%d"),
                                 'Country': country,
                                 'Username': username,
-                                'Password': pbkdf2_sha256.hash(password),
-                                'SecurityQuestion': securityquestion,
-                                'SecurityAnswer': securityanswer
+                                'Bio': bio,
+                                'Date_Joined': datejoined
                             }
 
-                            # Using Flags Technique, if account can be successfully created, proceed with profile creation
+                            db.Profiles.insert_one(new_profile)
 
-                            create_account_success = False
-                            try:
-                                db.Users.insert_one(new_user)
-                                create_account_success = True
-                            except Exception as e:
-                                return str(e)
-
-                            if create_account_success == True:
-                                # extra variables for profile
-                                bio = ''
-                                datejoined = datetime.datetime.now()
-                                new_profile = {
-                                    'ProfileID':profileID,
-                                    'AccountID': new_user,
-                                    'Full_Name': fname,
-                                    'Email': email,
-                                    'Date_Of_Birth': datetime.datetime.strptime(dob, "%Y-%m-%d"),
-                                    'Country': country,
-                                    'Username': username,
-                                    'Bio': bio,
-                                    'Date_Joined': datejoined
-                                }
-
-                                db.Profiles.insert_one(new_profile)
-
-                                flash("Your Account has been created", "success")
-                                user_logged_in = User()
-                                user_data = db.Users.find_one({
-                                    'Email':email
-                                })
-                                user_logged_in.id = user_data['Email']
-                                user_logged_in.username = user_data['Username']
-                                flask_login.login_user(user_logged_in)
-
-                                return redirect(url_for('home'))
-
-                else:
+                            flash("Your Account has been created", "success")
+                            user_logged_in = User()
+                            user_data = db.Users.find_one({
+                                'Email':email
+                            })
+                            user_logged_in.id = user_data['Email']
+                            user_logged_in.username = user_data['Username']
+                            flask_login.login_user(user_logged_in)
+                            return redirect(url_for('home'))
+            else:
+                if username_check['Username'] ==username:
                     #  If user enters username that matches another existing username, raise error
-                    if username == username_check['Username']:
-                        flash('Error: account already exists, please try again with another valid username','danger')
-                        errors.update(invalid_username="Account already exists,please proceed to login")
-                        database_error = True
+                    flash('Error: account already exists, please try again with another valid username','danger')
+                    errors.update(invalid_username="Account already exists,please proceed to login")
+                    database_error = True
                         # if user enters username and email that matches another existing username and email, raise error
-                        if email_check:
-                            if email_check['Email'] ==email and username_check['Username']==username:
-                                flash('Error: Email and Username have been used already,please enter something different','danger')
-                                errors.update(invalid_email_and_username="Email and Username have been used, please try something different")
-                                database_error = True
-            
-
+                    if email_check:
+                        if email_check['Email'] ==email and username_check['Username']==username:
+                            flash('Error: Email and Username have been used already,please enter something different','danger')
+                            errors.update(invalid_email_and_username="Email and Username have been used, please try something different")
+                            database_error = True
+                
                 if len(errors) > 0:
-                            flash("Registration Failure",'danger')
-                            return render_template('register_user.template.html',questions=all_security_questions,
-                                                        errors=errors)
+                    flash("Registration Failure",'danger')
+                    return render_template('register_user.template.html',questions=all_security_questions,
+                                            errors=errors)
 
         
 
@@ -248,7 +255,8 @@ def logout():
 @app.route('/home')
 @flask_login.login_required
 def home():
-    return render_template('home.template.html')
+    posts = db.Posts.find()
+    return render_template('home.template.html',posts=posts)
 
 
 # Editing User Account Information
@@ -393,6 +401,7 @@ def show_user_profile():
 
 # Allowing User to Edit Profile
 @app.route('/edit/profile',methods=['GET','POST'])
+@flask_login.login_required
 def edit_user_profile():
     if request.method == 'GET':
         # Retrieving the information of the user profile from the database
@@ -432,6 +441,60 @@ def edit_user_profile():
             flash("Your Profile has been updated successfully","success")
             return redirect(url_for('show_user_profile'))
 
+
+# Creation of the Post System, Delete My Posts, Edit My Posts, See My Posts
+@app.route('/create/post',methods=['GET','POST'])
+@flask_login.login_required
+def create_post():
+    if request.method =="GET":
+        # Loads the create post form for the user
+        return render_template('create_post.template.html',errors={})
+    else: 
+        # Retrieve the information from the fields of the form
+        title = request.form.get('title')
+        content = request.form.get('content')
+
+        # Validate the form inputs
+        # Accumulator
+        errors = {}
+        # Check if title is empty
+        if title == "":
+            flash('Error: Invalid Title','danger')
+            errors.update(invalid_title="Title Field is Empty, please enter a valid title")
+        # Check if content is empty
+        elif content =="":
+            flash("Error: Invalid Content",'danger')
+            errors.update(invalid_content="Content Field is Empty,please enter a valid content")
+        # If errors, redirect back to the create post page and raise error
+        if len(errors) > 0:
+            flash("Create Failure",'danger')
+            return redirect(url_for('create_post'))
+        # If no errors, insert post data into database
+        else:
+            # Issues a random ID number for the profile ID that is unique and not repeated
+            post_number_list = list(range(1,max_capacity_users))
+            random.shuffle(post_number_list)
+            postID = post_number_list.pop()
+            dateposted = datetime.datetime.now()
+            votes=int()
+            comments = {}
+
+            new_post = {
+                'PostID':postID,
+                'Title':title,
+                'Content':content,
+                'Votes': votes,
+                'Comments': comments,
+                'Date_Posted':dateposted,
+                'Username': flask_login.current_user.username
+            }
+
+            db.Posts.insert_one(new_post)
+            flash("Your Post has been created", "success")
+            return redirect(url_for('home'))
+
+
+# Allow User to See the Posts that the User has made
 
 
 if __name__ == "__main__":
