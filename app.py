@@ -8,6 +8,8 @@ from passlib.hash import pbkdf2_sha256
 import datetime
 import random
 
+
+
 # Load Environment Variables
 load_dotenv()
 
@@ -495,8 +497,37 @@ def create_post():
 
 
 # Allow User to See the Posts that the User has made
+# My Posts Section
+@app.route('/myposts',methods=['GET'])
+@flask_login.login_required
+def show_user_posts():
+    user_posts = db.Posts.find({
+        'Username':flask_login.current_user.username
+    })
+    return render_template('user_posts.template.html',user_posts=user_posts)
+
+# Allow Users to click on each post to view the full content 
+@app.route('/post/<post_id>',methods=['GET'])
+@flask_login.login_required
+def show_post(post_id):
+    post = db.Posts.find_one({
+        '_id':ObjectId(post_id)
+    })
+    return render_template('show_post.template.html',post=post)
+
+# Allow Users to Edit their own post
+@app.route('/edit/post/<post_id>',methods=['GET','POST'])
+@flask_login.login_required
+def edit_user_posts(post_id):
+    if request.method == 'GET':
+        user_post = db.Posts.find_one({
+            '_id':ObjectId(post_id)
+        })
+    else:
+        pass
 
 
+# Allow users to Delete their own post 
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
