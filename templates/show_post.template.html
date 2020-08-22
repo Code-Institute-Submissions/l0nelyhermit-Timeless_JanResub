@@ -1,0 +1,20 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="container">
+        <div>
+            <h2> {{post.Title}} </h2>
+            <div>
+                {{post.Content}}
+            <div>
+                <h5>Posted By {{post.Username}} </h5>
+                <h5>Time of Post:{{post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+            </div>
+            <div>
+                Comments: {{Comments}}
+            </div>
+        </div>
+</div>
+{% endif %}
+{% endblock %}

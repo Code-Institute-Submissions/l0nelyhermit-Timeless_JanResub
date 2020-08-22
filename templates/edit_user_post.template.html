@@ -1,0 +1,16 @@
+{% extends 'base.template.html'%}
+
+{% block content %}
+    <div class="container">
+        
+    <h3>Updating Post: {{user_post.Title}}</h3>
+
+    <form method="POST">
+        {% with %}
+            {% set previous_values= user_post %}
+            {% include 'forms/post_form.template.html' %}
+        {% endwith %}
+        <input type="submit" value="update" class="btn btn-primary"/>
+    </form>
+    </div>
+{% endblock %}
