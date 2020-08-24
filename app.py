@@ -523,11 +523,62 @@ def edit_user_posts(post_id):
         user_post = db.Posts.find_one({
             '_id':ObjectId(post_id)
         })
+        return render_template('edit_user_post.template.html',user_post=user_post)
     else:
-        pass
+        # Retrieving the information from the form
+        title = request.form.get('title')
+        content = request.form.get('content')
+
+        # Form Field Validation
+        # Check if the fields are empty, if the fields are empty raise the error
+        # Accumulator
+        errors = {}
+        # Check if title is empty
+        if title == "":
+            flash('Error: Invalid Title','danger')
+            errors.update(invalid_title="Title Field is Empty, please enter a valid title")
+        # Check if content is empty
+        elif content =="":
+            flash("Error: Invalid Content",'danger')
+            errors.update(invalid_content="Content Field is Empty,please enter a valid content")
+        # If errors, redirect back to the create post page and raise error
+        if len(errors) > 0:
+            user_post = db.Posts.find_one({
+                '_id':ObjectId(post_id)
+            })  
+            flash("Update Failure",'danger')
+            return redirect(url_for('show_user_posts'))
+        else:
+            # If there are no errors, proceed to update the post
+            db.Posts.update({
+                '_id':ObjectId(post_id)
+            },
+                {
+                    '$set': {
+                        'Title': title,
+                        'Content': content
+                            }
+                        }
+            )
+            flash("Your Post has been updated successfully","success")
+            return redirect(url_for('show_user_posts'))
+
+
 
 
 # Allow users to Delete their own post 
+@app.route('/delete/<post_id>',methods=['GET','POST'])
+@flask_login.login_required
+def delete_user_posts(post_id):
+    if request.method == "GET":
+        return render_template('delete_user_post.template.html')
+    else:
+        db.Posts.remove({
+            '_id':ObjectId(post_id)
+        })
+        flash("Your Post has been removed successfully","success")
+        return redirect(url_for('show_user_posts'))
+        
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
