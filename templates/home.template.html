@@ -13,6 +13,11 @@
 <div class="container">
     {% for each_post in posts %}
         <div>
+            <div>
+                <a href="" ><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+                    {{each_post.Votes}}
+                <a href="" ><i class="fa fa-arrow-down" style="font-size:24px"></i></a>
+            </div>
             <h2>{{each_post.Title}}</h2>
             <div>
                 {{each_post.Content}}
@@ -22,6 +27,7 @@
                 </div>
             </div>
             <a href="{{ url_for('show_post',post_id = each_post._id)}}">Link To Post</a>
+
         </div>
     {% endfor %}
 </div>

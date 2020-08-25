@@ -3,6 +3,11 @@
 {% block content %}
 {% if current_user.is_authenticated %}
 <div class="container">
+    <div>
+        <a href="" class="upvote"><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+            {{post.Votes}}
+        <a href="" class="downvote"><i class="fa fa-arrow-down" style="font-size:24px;"></i></a>
+    </div>
         <div>
             <h2> {{post.Title}} </h2>
             <div>
@@ -15,6 +20,24 @@
                 Comments: {{Comments}}
             </div>
         </div>
+        <div>
+            <form method="post">
+                <textarea id="summernote" name="editordata"></textarea>
+                <input type="submit" value="COMMENT" class="btn btn-primary">
+            </form>
+        </div>
+    <div>
+        {% for each_comment in post.Comments%}
+        <div>
+            <h5 class="content">{{each_comment.Content}}</h5>
+            <div>
+                Posted By: {{each_comment.Username}}
+                Time: {{each_comment.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
+
 {% endif %}
 {% endblock %}
