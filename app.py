@@ -527,7 +527,7 @@ def show_post(post_id):
         # Validate the comment, check if the comment is empty
         if comment == "":
             flash('Error: Invalid Comment!','danger')
-            return render_template('show_post.template.html',post=post)
+            return redirect(request.url)
         else:
             # Update the Post in the Database and add comments to the array
             db.Posts.update({
@@ -545,7 +545,7 @@ def show_post(post_id):
 
             })
             flash('Comment has been added successfully','success')
-            return render_template('show_post.template.html',post=post)
+            return redirect(request.url)
 
 
 # Allow Users to Edit their own post
@@ -613,9 +613,13 @@ def delete_user_posts(post_id):
         return redirect(url_for('show_user_posts'))
 
 
-
-
-
+# Implement a Upvote and Downvote button using AJAX
+# Implement working Edit Comment, Delete Comment
+# Implement Search Functionality
+# Implement Marketplace Section
+# CRUD For Listings
+# User Reviews, Seller, Buyer
+# 
 
 
 
