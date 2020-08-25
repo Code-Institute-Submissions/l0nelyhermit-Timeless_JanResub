@@ -7,6 +7,7 @@ from bson.objectid import ObjectId
 from passlib.hash import pbkdf2_sha256
 import datetime
 import random
+from bs4 import BeautifulSoup
 
 
 
@@ -479,7 +480,7 @@ def create_post():
             postID = post_number_list.pop()
             dateposted = datetime.datetime.now()
             votes=int()
-            comments = {}
+            comments = []
 
             new_post = {
                 'PostID':postID,
@@ -507,13 +508,45 @@ def show_user_posts():
     return render_template('user_posts.template.html',user_posts=user_posts)
 
 # Allow Users to click on each post to view the full content 
-@app.route('/post/<post_id>',methods=['GET'])
+@app.route('/post/<post_id>',methods=['GET','POST'])
 @flask_login.login_required
 def show_post(post_id):
     post = db.Posts.find_one({
-        '_id':ObjectId(post_id)
-    })
-    return render_template('show_post.template.html',post=post)
+            '_id':ObjectId(post_id)
+        })
+    if request.method =="GET":
+        return render_template('show_post.template.html',post=post)
+    else:
+        # Allow Users to Post Comments
+        # Retrieve Information From the Comment Box Form
+        comment = request.form.get('editordata')
+        comment_soup = BeautifulSoup(comment,"html.parser")
+        time_of_post = datetime.datetime.now()
+        votes = int()
+
+        # Validate the comment, check if the comment is empty
+        if comment == "":
+            flash('Error: Invalid Comment!','danger')
+            return render_template('show_post.template.html',post=post)
+        else:
+            # Update the Post in the Database and add comments to the array
+            db.Posts.update({
+                '_id':ObjectId(post_id)
+            },{
+                '$push': {
+                    'Comments':{
+                        '_id': ObjectId(),
+                        'Username': flask_login.current_user.username,
+                        'Content': comment_soup.get_text(),
+                        'Date_Posted': time_of_post,
+                        'Votes': votes
+                    }
+                }
+
+            })
+            flash('Comment has been added successfully','success')
+            return render_template('show_post.template.html',post=post)
+
 
 # Allow Users to Edit their own post
 @app.route('/edit/post/<post_id>',methods=['GET','POST'])
@@ -578,7 +611,18 @@ def delete_user_posts(post_id):
         })
         flash("Your Post has been removed successfully","success")
         return redirect(url_for('show_user_posts'))
-        
+
+
+
+
+
+
+
+
+
+
+    
+
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
