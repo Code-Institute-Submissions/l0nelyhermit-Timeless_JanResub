@@ -615,11 +615,121 @@ def delete_user_posts(post_id):
 
 # Implement a Upvote and Downvote button using AJAX
 # Implement working Edit Comment, Delete Comment
+@app.route('/edit/comment/<comment_id>',methods=['GET','POST'])
+@flask_login.login_required
+def edit_comment(comment_id):
+    pipeline= [
+        {
+            "$unwind":"$Comments"
+        },
+        {
+            "$match":{
+                "Comments._id":ObjectId(comment_id)
+            }
+        },
+        {
+            '$project':{
+                '_id':1,
+                'PostID':0,
+                'Title':0,
+                'Content':0,
+                'Votes':0,
+                'Date_Posted':0,
+                'Username':0
+            }
+        }
+    ]
+    cursor = db.Posts.aggregate(pipeline)
+    results = list(cursor)
+    for i in results:
+            comment_data=i
+    post_id = comment_data['_id']
+    if request.method =="GET":
+        user_post = comment_data.get('Comments', {}).get('Username')
+        comment_post = comment_data.get('Comments',{})
+        if flask_login.current_user.username == user_post:
+            return render_template('edit_comment.template.html',comment_post=comment_post)
+        else:
+            flash('Error: Not Allowed to Edit Comment','danger')
+            return redirect(url_for('show_post',post_id=post_id))
+    else:
+        # Receive the input from the form
+        comment = request.form.get('editordata')
+        comment_soup = BeautifulSoup(comment,"html.parser")
+
+        # Validate the field, check if the comment is not empty. If the comment is empty, raise an error
+        if comment == "":
+            flash('Error: Invalid Comment!','danger')
+            return redirect(request.url)
+        else:
+            comment_data.get('Comments', {}).get('_id')
+            # If there are no errors, proceed to update the comment
+            db.Posts.update({
+                '_id':ObjectId(comment_data['_id']),
+                'Comments.Content': str(comment_data.get('Comments', {}).get('Content')),
+            },
+                {'$set':{"Comments.$.Content":comment_soup.get_text()}}
+            )
+            flash('Comment has been updated successfully','success')
+            return redirect(url_for('show_post',post_id=post_id))
+
+@app.route('/delete/comment/<comment_id>')
+@flask_login.login_required
+def delete_comment(comment_id):
+    pipeline= [
+        {
+            "$unwind":"$Comments"
+        },
+        {
+            "$match":{
+                "Comments._id":ObjectId(comment_id)
+            }
+        },
+        {
+            '$project':{
+                '_id':1,
+                'PostID':0,
+                'Title':0,
+                'Content':0,
+                'Votes':0,
+                'Date_Posted':0,
+                'Username':0
+            }
+        }
+    ]
+    cursor = db.Posts.aggregate(pipeline)
+    results = list(cursor)
+    for i in results:
+            comment_data=i
+    post_id = comment_data['_id']
+    user_post = comment_data.get('Comments', {}).get('Username')
+     # Check if the user deleting is the user who made the comment
+    if flask_login.current_user.username != user_post:
+        flash('Error: Not Allowed to Delete Comment','danger')
+        return redirect(url_for('show_post',post_id=post_id))
+    else:
+        # Allow the user to delete the comment
+        db.Posts.update({
+                '_id':ObjectId(comment_data['_id']),
+                'Comments.Content': str(comment_data.get('Comments', {}).get('Content')),
+            },
+                {'$pull':
+                    {"Comments":{
+                        "_id":ObjectId(comment_data.get('Comments', {}).get('_id'))
+                    }
+                }})
+        flash('Comment has been removed successfully','success')
+        return redirect(url_for('show_post',post_id=post_id))
+    
+
+
+        
+# UI/UX For Single Page Application
 # Implement Search Functionality
 # Implement Marketplace Section
 # CRUD For Listings
 # User Reviews, Seller, Buyer
-# 
+# My Listings, My Reviews
 
 
 
