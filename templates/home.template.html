@@ -10,13 +10,17 @@
 <a href="{{ url_for('delete_user_account') }}" class="btn btn-success btn-lg">Delete Account</a>
 <a href="{{ url_for('create_post') }}" class="btn btn-success btn-lg">Create Post</a>
 <a href="{{ url_for('show_user_posts') }}" class="btn btn-success btn-lg">My Posts</a>
+<a href="{{ url_for('create_listing') }}" class="btn btn-success btn-lg">Create Listings</a>
+<a href="{{ url_for('show_user_listings') }}" class="btn btn-success btn-lg">My Listings</a>
 <div class="container">
     {% for each_post in posts %}
         <div>
             <div>
-                <a href="" ><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+                <a class ='upvote-button' type="submit" onclick=upvote(this)  data-postid="{{each_post._id}}" ><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+                <div class="vote-count">
                     {{each_post.Votes}}
-                <a href="" ><i class="fa fa-arrow-down" style="font-size:24px"></i></a>
+                </div>
+                <a class= 'downvote-button' href="" onclick=downvote(this) data-postid="{{each_post._id}}" ><i class="fa fa-arrow-down" style="font-size:24px"></i></a>
             </div>
             <h2>{{each_post.Title}}</h2>
             <div>
@@ -31,5 +35,28 @@
         </div>
     {% endfor %}
 </div>
+
+<div class="container">
+    {% for each_listing in listings %}
+        <div>
+            <div>
+                <img src="{{each_listing.Image_URL}}"/>
+            </div>
+            <div>
+                <h2>{{each_listing.Title}}</h2>
+            </div>
+                <h4>{{each_listing.Price}}</h4>
+                <p>{{each_listing.Description}}</p>
+                <div>
+                    <h5>Posted By: {{each_listing.Username}}</h5>
+                    <h5>Time of Post: {{each_listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+                    <p>Likes: {{each_listing.Likes}}</p>
+                    <a href="{{ url_for('show_listing',listing_id = each_listing._id)}}">Show Listing</a>
+                </div>
+        </div>
+    {% endfor %}
+</div>
+
+
 {% endif %}
 {% endblock %}

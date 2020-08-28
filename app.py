@@ -8,11 +8,18 @@ from passlib.hash import pbkdf2_sha256
 import datetime
 import random
 from bs4 import BeautifulSoup
+from country_list import countries_for_language
+import json
+
 
 
 
 # Load Environment Variables
 load_dotenv()
+
+# Cloundinary Variables
+CLOUD_NAME = os.environ.get('CLOUD_NAME')
+UPLOAD_PRESET=os.environ.get('UPLOAD_PRESET')
 
 app= Flask(__name__, static_url_path='/static')
 
@@ -22,12 +29,14 @@ app.secret_key = os.environ.get('SECRET_KEY')
 MONGO_URI= os.environ.get('MONGO_URI')
 DB_NAME = "Timeless"
 
+
 # Connect to the MongoDB Database
 client = pymongo.MongoClient(MONGO_URI)
 db = client[DB_NAME]
 
- # Instance Variable for the Maximum Number Of Users for the site
+ # Instance Variable for the Maximum Number Of Users,Posts and Listings for the site
 max_capacity_users = 9999
+
 
 
 class User(flask_login.UserMixin):
@@ -259,7 +268,8 @@ def logout():
 @flask_login.login_required
 def home():
     posts = db.Posts.find()
-    return render_template('home.template.html',posts=posts)
+    listings= db.Listings.find()
+    return render_template('home.template.html',posts=posts,listings=listings)
 
 
 # Editing User Account Information
@@ -455,7 +465,7 @@ def create_post():
     else: 
         # Retrieve the information from the fields of the form
         title = request.form.get('title')
-        content = request.form.get('content')
+        content = request.form.get('editordata')
 
         # Validate the form inputs
         # Accumulator
@@ -481,11 +491,12 @@ def create_post():
             dateposted = datetime.datetime.now()
             votes=int()
             comments = []
+            content_soup = BeautifulSoup(content,"html.parser")
 
             new_post = {
                 'PostID':postID,
                 'Title':title,
-                'Content':content,
+                'Content':content_soup.get_text(),
                 'Votes': votes,
                 'Comments': comments,
                 'Date_Posted':dateposted,
@@ -496,7 +507,7 @@ def create_post():
             flash("Your Post has been created", "success")
             return redirect(url_for('home'))
 
-
+    
 # Allow User to See the Posts that the User has made
 # My Posts Section
 @app.route('/myposts',methods=['GET'])
@@ -560,7 +571,8 @@ def edit_user_posts(post_id):
     else:
         # Retrieving the information from the form
         title = request.form.get('title')
-        content = request.form.get('content')
+        content = request.form.get('editordata')
+        content_soup = BeautifulSoup(content,"html.parser")
 
         # Form Field Validation
         # Check if the fields are empty, if the fields are empty raise the error
@@ -589,7 +601,7 @@ def edit_user_posts(post_id):
                 {
                     '$set': {
                         'Title': title,
-                        'Content': content
+                        'Content': content_soup.get_text()
                             }
                         }
             )
@@ -613,7 +625,7 @@ def delete_user_posts(post_id):
         return redirect(url_for('show_user_posts'))
 
 
-# Implement a Upvote and Downvote button using AJAX
+
 # Implement working Edit Comment, Delete Comment
 @app.route('/edit/comment/<comment_id>',methods=['GET','POST'])
 @flask_login.login_required
@@ -722,17 +734,230 @@ def delete_comment(comment_id):
         return redirect(url_for('show_post',post_id=post_id))
     
 
+        
+
+
+countries = dict(countries_for_language('en'))
+country_list = countries.values()
+@app.route('/create/listing',methods=['GET','POST'])
+@flask_login.login_required
+def create_listing():
+    if request.method=='GET':
+        # Loads the create listing form for the user
+        return render_template('create_listing.template.html',errors={},countries=country_list,
+                                cloud_name=CLOUD_NAME,upload_preset=UPLOAD_PRESET)
+    else: 
+        # Retrieve the values of the form 
+        title = request.form.get('title')
+        description= request.form.get('editordata')
+        price = request.form.get('price')
+        country=request.form.get('country')
+        caption = request.form.get('caption')
+        url_image= request.form.get('uploaded-file-url')
+        asset_id=request.form.get('asset-id')
+        
+
+        # Check if the form entry is valid:
+        # Accumulator
+        errors={}
+         # Check if title is empty
+        if title == "":
+            flash('Error: Invalid Title','danger')
+            errors.update(invalid_title="Title Field is Empty, please enter a valid title")
+        # Check if description is empty
+        elif description =="":
+            flash("Error: Invalid Description",'danger')
+            errors.update(invalid_description="Description Field is Empty,please enter a valid description")
+        # Check if Image File is empty
+        elif url_image=="":
+            flash("Error: Invalid Image","danger")
+            errors.update(invalid_image="Valid Image has to be uploaded, please upload an image")
+        
+        # If errors, redirect back to the create listing page and raise error
+        if len(errors) > 0:
+            flash("Create Failure",'danger')
+            return redirect(url_for('create_listing'))
+        # If no errors, insert listing data into database
+        else:
+            # Issues a random ID number for the profile ID that is unique and not repeated
+            listing_number_list = list(range(1,max_capacity_users))
+            random.shuffle(listing_number_list)
+            listingID = listing_number_list.pop()
+            dateposted = datetime.datetime.now()
+            likes = int()
+            description_soup = BeautifulSoup(description,"html.parser")
+
+
+            new_listing = {
+                'listingID':listingID,
+                'Title':title,
+                'Description':description_soup.get_text(),
+                'Price': price,
+                'Country': country,
+                'Likes': likes,
+                'Date_Posted':dateposted,
+                'Username': flask_login.current_user.username,
+                'Image_URL': url_image,
+                'Asset_ID':asset_id,
+                'Caption':caption
+            }
+
+            db.Listings.insert_one(new_listing)
+            flash("Your Listing has been created", "success")
+            return redirect(url_for('home'))
+
+@app.route('/edit/listing/<listing_id>',methods=['GET','POST'])
+@flask_login.login_required
+def edit_listing(listing_id):
+    listing = db.Listings.find_one({
+            '_id':ObjectId(listing_id)
+    })
+    get_id = listing['_id']
+    if request.method =='GET':
+        return render_template('edit_listing.template.html',listing=listing,countries=country_list,
+                                cloud_name=CLOUD_NAME,upload_preset=UPLOAD_PRESET)
+    else:
+        # Retrieve the updated information from the form
+        title = request.form.get('title')
+        description= request.form.get('editordata')
+        price = request.form.get('price')
+        country=request.form.get('country')
+        caption = request.form.get('caption')
+        url_image= request.form.get('uploaded-file-url')
+        asset_id=request.form.get('asset-id')
+        # Validate the form inputs
+        
+        # Check if the form entry is valid:
+        # Accumulator
+        errors={}
+         # Check if title is empty
+        if title == "":
+            flash('Error: Invalid Title','danger')
+            errors.update(invalid_title="Title Field is Empty, please enter a valid title")
+        # Check if description is empty
+        elif description =="":
+            flash("Error: Invalid Description",'danger')
+            errors.update(invalid_description="Description Field is Empty,please enter a valid description")
+        # Check if Image File is empty
+        elif url_image=="":
+            flash("Error: Invalid Image","danger")
+            errors.update(invalid_image="Valid Image has to be uploaded, please upload an image")
+        
+        # If errors, redirect back to the create listing page and raise error
+        if len(errors) > 0:
+            flash("Update Failure",'danger')
+            return redirect(url_for('edit_listing',listing_id=ObjectId(get_id)))
+        # If no errors, insert listing data into database
+        else:
+            # Update the listing
+            description_soup = BeautifulSoup(description,"html.parser")
+            db.Listings.update({
+                '_id':ObjectId(listing_id)
+            },
+                {
+                    '$set': {
+                        'Title': title,
+                        'Description': description_soup.get_text(),
+                        'Price': price,
+                        'Country': country,
+                        'Image_URL': url_image,
+                        'Asset_ID':asset_id,
+                        'Caption':caption
+                        }
+                }
+            )
+            flash("Your Listing has been updated successfully","success")
+            return redirect(url_for('show_user_listings'))
+
+
+@app.route('/delete/listing/<listing_id>')
+@flask_login.login_required
+def delete_listing(listing_id):
+    db.Listings.remove({
+        '_id':ObjectId(listing_id)
+    })
+    return redirect(url_for('show_user_listings'))
+    
+
+@app.route('/mylistings')
+def show_user_listings():
+    user_listings = db.Listings.find({
+        'Username':flask_login.current_user.username
+    })
+    return render_template('user_listings.template.html',user_listings=user_listings)
+    
+
+
+@app.route('/listing/<listing_id>',methods=['GET','POST'])
+@flask_login.login_required
+def show_listing(listing_id):
+    listing = db.Listings.find_one({
+            '_id':ObjectId(listing_id)
+        })
+    if request.method =="GET":
+        return render_template('show_listing.template.html',listing=listing)
+
+
+
+# Make a chat Bot for users to chat upon making a deal
+
+
+# Search Engine implementation for Posts
+
+# Search Engine implementation for Listings
+
+# Filter Search For Posts
+
+# Filter Search for Listings (Price/Brand)
+
+
+
+
+# Implement a Upvote and Downvote button using AJAX
+@app.route('/upvote',methods=['POST'])
+@flask_login.login_required
+def upvote_post():
+    if request.method == "POST":
+        data_received = json.loads(request.data)
+        new_likes = int(data_received['Votes']) 
+        print(data_received)
+        print(new_likes)
+        post_id = data_received['PostID']
+        print(post_id)
+        # Update the votes in database
+        db.Posts.update({
+            '_id':ObjectId(post_id)
+        },{
+            '$set':{
+                'Votes':new_likes
+            }
+        })
+        return redirect(url_for('home'))
+
+@app.route('/downvote',methods=['POST'])
+@flask_login.login_required
+def downvote_post():
+    if request.method == "POST":
+        data_received = json.loads(request.data)
+        new_likes = int(data_received['Votes']) 
+        print(data_received)
+        print(new_likes)
+        post_id = data_received['PostID']
+        print(post_id)
+        # Update the votes in database
+        db.Posts.update({
+            '_id':ObjectId(post_id)
+        },{
+            '$set':{
+                'Votes':new_likes
+            }
+        })
+        return redirect(url_for('home'))
 
         
-# UI/UX For Single Page Application
-# Implement Search Functionality
-# Implement Marketplace Section
-# CRUD For Listings
-# User Reviews, Seller, Buyer
-# My Listings, My Reviews
+    
 
-
-
+        
 
 
     
