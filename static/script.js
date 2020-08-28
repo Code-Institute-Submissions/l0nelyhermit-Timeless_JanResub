@@ -1,14 +1,45 @@
+function upvote(a){
+    let votes = parseInt($(a).parent().children('div').text())
+    let post_id =$(a).data('postid')
+    votes += 1;
+    $(a).parent().children('div').text(votes);
+    $.ajax({
+        url:'/upvote',
+        type:'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType:"json",
+        data: JSON.stringify({'PostID':post_id,
+                              'Votes': votes})
+    });
+}
+
+function downvote(a){
+    let votes = parseInt($(a).parent().parent('div').text())
+    votes -=1;
+    if(votes <0){
+        votes = 0;
+        $(a).parent().parent('div').text(votes);
+    }else{
+        $(a).parent().parent('div').text(votes);
+    }
+
+    $.ajax({
+        url:'/downvote',
+        type:'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType:"json",
+        data:JSON.stringify({'Votes':votes,
+                             'PostID':$(a).data('postid')})
+    })
+}
+
+
 $(function(){
     // Implementing functionality for Login Function
     $('#login-button').click(function(){
         $('#login-form-hidden').show()
     })
 
-    let votecount = '{{post.Votes}}'
-    console.log(votecount)
-    // $('.upvote').click(function(){
-        
-    // })
 
     $('#summernote').summernote({
         placeholder: 'Start creating your note here!',
