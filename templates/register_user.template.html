@@ -1,20 +1,27 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-    <ul>
-    {% for key, each_error in errors.items() %}
-        <li>{{each_error}}</li>
-    {% endfor %}
-    </ul>
-
-    <form method="POST">
-        {%with%}
-            {% if not previous_values %}
-                {% set previous_values = {} %}
-            {% endif %}
-
-            {% include 'forms/register_form.template.html' %}
-            <input type="submit" value="REGISTER" class="btn btn-primary">
-        {% endwith %}
-    </form>
+    <div id="register-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                    <div class="card card-register my-5">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">REGISTER</h5>
+                            <form method="POST" class="register-form">
+                                {%with%}
+                                    {% if not previous_values %}
+                                        {% set previous_values = {} %}
+                                    {% endif %}
+                        
+                                    {% include 'forms/register_form.template.html' %}
+                                    <input type="submit" value="REGISTER" class="btn btn-lg btn-danger btn-block">
+                                {% endwith %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

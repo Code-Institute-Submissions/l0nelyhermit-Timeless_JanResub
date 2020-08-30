@@ -22,7 +22,6 @@ function downvote(a){
     }else{
         $(a).parent().parent('div').text(votes);
     }
-
     $.ajax({
         url:'/downvote',
         type:'POST',
@@ -31,14 +30,31 @@ function downvote(a){
         data:JSON.stringify({'Votes':votes,
                              'PostID':$(a).data('postid')})
     })
+    return false;
 }
+
+
+function hideAllPages() {
+    let pages = $(".page");
+    for (let p of pages) {
+        $(p).removeClass('show');
+        $(p).addClass('hidden')
+    }
+}
+
+$('#page2-btn').click(function(){
+    let pageNumber = $(this).data('page');
+    hideAllPages();
+    $(`#page-${pageNumber}`).addClass('show');
+    $(`#page-${pageNumber}`).removeClass('hidden');
+})
+
+
+
 
 
 $(function(){
     // Implementing functionality for Login Function
-    $('#login-button').click(function(){
-        $('#login-form-hidden').show()
-    })
 
 
     $('#summernote').summernote({
@@ -60,5 +76,10 @@ $(function(){
             ['view', ['fullscreen']]
         ]
     });
+
+    $('#sidebarCollapse').on('click',function(){
+        $('#sidebar,#content').toggleClass('active')
+    })
+
 
 })
