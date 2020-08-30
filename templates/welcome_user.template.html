@@ -1,42 +1,70 @@
 {% extends 'base.template.html' %}
 
+<button data-page="2" id="page2-btn" class="login-button">Login</button>
 {% block content %}
-<div id="background-holder">
-    <div class="jumbotron jumbotron-fluid" id="content-display">
-      <h1 class= "title-text">TIMELESS</h1>
-      <p class="sub-header-quote">Home Of The Watches Community</p>
-        <div class="container-fluid" id="button-control" >
-                <div class="container-fluid" id="button-area">
-                    <button type="button" class="btn btn-danger btn-rounded btn-lg mr-5" id="login-button">LOGIN</button> 
-                    <button type="button" class="btn btn-danger btn-rounded btn-lg mr-3" id="register-button" onclick="window.location.href='{{url_for('register_user')}}'">REGISTER</button>
+    <div id="all-pages">
+        <div class="page" id="page-1">
+           <section id="hero">
+                <div class="jumbotron jumbotron-fluid" id="jumbotron-hero">
+                    <div class="container-fluid" id="hero-container" data-aos="fade-up" data-aos-delay="200">
+                        <h1>TIMELESS</h1>
+                        <h2>Meet. Connect. Share.</h2>
+                        <div class="d-flex">
+                            <button type ="button" data-page="2" id="page2-btn" class="btn btn-danger btn-rounded waves-effect mr-5">LOGIN</button>
+                            <button  class="btn btn-lg btn-outline-light btn-rounded waves-effect mr-3" id="register-button" onclick="window.location.href='{{url_for('register_user')}}'">REGISTER</button>
+                        </div>
+                    </div>
                 </div>
+            </section>
         </div>
+
+        <div class="page hidden" id="page-2">
+            <section id="login-area">
+                <div class="container-fluid">
+                    <div class="row no-gutter">
+                      <div class="d-none d-md-flex col-md-4 col-lg-7 bg-image" id="image-login" >
+                      </div>
+                      <div class="col-md-8 col-lg-5">
+                        <div class="login d-flex align-items-center py-5">
+                          <div class="container">
+                            <div class="row">
+                              <div class="col-md-9 col-lg-8 mx-auto">
+                                <h3 class="login-heading mb-4">LOGIN</h3>
+                                <form method="POST">
+                                    <div class="form-group">
+                                        <label class="control-label" for="email" id="form-labels">
+                                            EMAIL
+                                        </label>
+                                        <div class="input-group input-group-lg" id="form-fields">
+                                          <div class="input-group-prepend"><i class="input-group-text fa fa-user"></i></div>
+                                          <input type="text" class="form-control" placeholder="Enter Email Address" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label" for="password" id="form-labels">
+                                            PASSWORD
+                                        </label>
+                                        <div class="input-group input-group-lg" id="form-fields"> 
+                                          <span class="input-group-prepend"><i class="input-group-text fa fa-lock"></i></span>
+                                          <input type="password" class="form-control" placeholder="Enter Password" name="password">
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="submit-area">
+                                        <input type="submit" value="LOGIN" class="btn btn-danger btn-lg" id="submit-button-login">
+                                    </div>
+                                    <div class="text-center">
+                                        <a class="small" href="{{url_for('register_user')}}" style="color:inherit;">CREATE ACCOUNT</a></div>
+                                </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </section>
+        </div>
+   
     </div>
-    <div class="container-fluid" id="login-form-hidden">
-        <form method="POST">
-            <h2 class="form-title-text">SIGN IN TO YOUR ACCOUNT</h2>
-            <div class="form-group">
-                <label class="control-label" for="email" id="form-labels">
-                    EMAIL
-                </label>
-                <div class="input-group input-group-lg" id="form-fields">
-                  <div class="input-group-prepend"><i class="input-group-text fa fa-user"></i></div>
-                  <input type="text" class="form-control" placeholder="Enter Email Address" name="email">
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label" for="password" id="form-labels">
-                    PASSWORD
-                </label>
-                <div class="input-group input-group-lg" id="form-fields"> 
-                  <span class="input-group-prepend"><i class="input-group-text fa fa-lock"></i></span>
-                  <input type="password" class="form-control" placeholder="Enter Password" name="password">
-                </div>
-            </div>
-            <div class="form-group" id="submit-area">
-                <input type="submit" value="LOGIN" class="btn btn-success btn-lg" id="submit-button">
-            </div>
-        </form>
-    </div>
-</div>
+
 {% endblock %}

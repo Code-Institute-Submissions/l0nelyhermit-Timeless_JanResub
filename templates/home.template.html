@@ -2,60 +2,146 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-{{current_user.id}}
-{{current_user.username}}
-<a href="{{url_for('show_user_profile')}}" class=" btn btn-success btn-lg">Show Profile</a>
-<a href="{{ url_for('logout') }}" class="btn btn-success btn-lg">Logout</a>
-<a href="{{ url_for('edit_user_account') }}" class="btn btn-success btn-lg">Edit Account</a>
-<a href="{{ url_for('delete_user_account') }}" class="btn btn-success btn-lg">Delete Account</a>
-<a href="{{ url_for('create_post') }}" class="btn btn-success btn-lg">Create Post</a>
-<a href="{{ url_for('show_user_posts') }}" class="btn btn-success btn-lg">My Posts</a>
-<a href="{{ url_for('create_listing') }}" class="btn btn-success btn-lg">Create Listings</a>
-<a href="{{ url_for('show_user_listings') }}" class="btn btn-success btn-lg">My Listings</a>
-<div class="container">
-    {% for each_post in posts %}
-        <div>
-            <div>
-                <a class ='upvote-button' type="submit" onclick=upvote(this)  data-postid="{{each_post._id}}" ><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
-                <div class="vote-count">
-                    {{each_post.Votes}}
-                </div>
-                <a class= 'downvote-button' href="" onclick=downvote(this) data-postid="{{each_post._id}}" ><i class="fa fa-arrow-down" style="font-size:24px"></i></a>
-            </div>
-            <h2>{{each_post.Title}}</h2>
-            <div>
-                {{each_post.Content}}
-                <div>
-                <h5>Posted By {{each_post.Username}} </h5>
-                <h5>Time of Post: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+<!-- Vertical Toolbar for the Users -->
+    <div class="vertical-nav bg-white" id="sidebar">
+        <div class="py-4 px-3 mb-4 bg-light">
+            <div class=" user d-flex align-items-center flex-column"><i class="fa fa-user fa-5x rounded-circle shadow-sm"></i>
+                <div class="user-body">
+                    <h4 class="username">{{current_user.username}}</h4>
                 </div>
             </div>
-            <a href="{{ url_for('show_post',post_id = each_post._id)}}">Link To Post</a>
 
         </div>
-    {% endfor %}
-</div>
 
-<div class="container">
-    {% for each_listing in listings %}
-        <div>
-            <div>
-                <img src="{{each_listing.Image_URL}}"/>
-            </div>
-            <div>
-                <h2>{{each_listing.Title}}</h2>
-            </div>
-                <h4>{{each_listing.Price}}</h4>
-                <p>{{each_listing.Description}}</p>
-                <div>
-                    <h5>Posted By: {{each_listing.Username}}</h5>
-                    <h5>Time of Post: {{each_listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
-                    <p>Likes: {{each_listing.Likes}}</p>
-                    <a href="{{ url_for('show_listing',listing_id = each_listing._id)}}">Show Listing</a>
+
+        <p class="text-black font-weight-bold text-uppercase px-3 small pb-4 mb-0">User Menu</p>
+
+        <ul class="nav flex-column bg-white mb-0">
+            <li class="nav-item" id="navigation-links">
+                <a href="{{url_for('home')}}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                <i class="fa fa-th-large fa-2x mr-4"></i>Home</a>
+            </li>
+            <li class="nav-item" id="navigation-links">
+                <a href="{{url_for('show_user_profile')}}" class="nav-link text-dark bg-light text-uppercase" id="sidebar-nav-text">
+                <i class="fa fa-id-card fa-2x mr-3" aria-hidden="true"></i>My Profile</a>
+            </li>
+            <li class="nav-item" id="navigation-links">
+                <a href="{{ url_for('show_user_posts') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                    <i class="fa fa-pencil-square-o fa-2x mr-3" aria-hidden="true"></i>My Posts</a>
+            </li>
+            <li class="nav-item  px-3 small pb-4 mb-0" id="logout-area">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg btn-block text-uppercase">
+                    Logout</a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Page -->
+    <div class="page-content" id="content">
+        <nav class="navbar navbar-expand-lg navbar-light  bg-light shadow-sm" id="main-navbar">
+            <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 d-inline-block align-top">
+                <i class="fa fa-bars mr-3"></i><small class="text-uppercase font-weight-bold">{{current_user.username}}</small></button>
+                
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('home')}}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('create_post')}}">Create Post</a>
+                        </li>
+                        
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0" id="searchbar-nav"> <input class="form-control mr-sm-2" type="text" placeholder="SEARCH POST"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">SEARCH</button> </form>
+                  </div>
+        </nav>
+
+
+        <div class="jumbotron jumbotron-fluid" id="jumbotron-background">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <h1 class="title-hero-text text-uppercase">Timeless</h1>
+                    </div>
                 </div>
+            </div>
         </div>
-    {% endfor %}
-</div>
+
+       <div class="row">
+           <div class="col-md-9 pr-0">
+                <div class="list-group-item" id="navigation-post-area">
+                    <div class="filter-settings">
+                        <h5 class="filter-text mr-2 pt-1">Most Recent</h5>
+                        <input type="checkbox" checked data-toggle="toggle" data-on="Most Popular" data-off="Most Recent" data-onstyle="secondary" data-offstyle="secondary" data-height='30' data-width='140'>
+                        <h5 class="filter-text ml-2 pt-1"> Most Popular</h5>
+                    </div>
+                    <div class="navigation-button-area">
+                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
+                    </div>
+                </div>
+                <div class="posts-listings-segment mx-auto">
+                    <ul class="list-group shadow">
+                        {% for each_post in posts %}
+                            <li class="list-group-item">
+                                <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
+                                    <div class="votes-area mr-3">
+                                        <a class ='upvote-button' type="submit" onclick=upvote(this)  data-postid="{{each_post._id}}" ><i class="fa fa-arrow-up" style="font-size:36px;"></i></a>
+                                        <div class="votecount ml-2">{{each_post.Votes}}</div>
+                                        <a class= 'downvote-button' href="" onclick=downvote(this) data-postid="{{each_post._id}}" ><i class="fa fa-arrow-down" style="font-size:36px"></i></a>
+                                    </div>
+                                    <div class="media-body order-2 order-lg-1" onclick="window.location.href='{{ url_for('show_post',post_id = each_post._id)}}'">
+                                      <h5 class="mt-0 font-weight-bold mb-2">{{each_post.Title}}</h5>
+                                      <p class="font-bold text-muted mb-0 small">{{each_post.Content|truncate(length=255,end="...")}}</p>
+                                      <div class="d-flex align-items-center justify-content-between mt-1">
+                                        <h6 class="font-weight-bold my-2">Posted By: {{each_post.Username}}</h6>
+                                        <h6 class="font-weight-bold my-2">Time Posted: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
+                                      </div>
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+           </div>
+           <div class="col-md-3 p-0">
+                <div class="community-area">
+                    <ul class="list-group shadow">
+                        <!-- list group item-->
+                        <li class="list-group-item">
+                          <!-- Custom content-->
+                          <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="media-body order-2 order-lg-1">
+                              <h3 class="mt-0 font-weight-bold mb-2 text-uppercase" style="text-align:center;">About Community</h3>
+                              <h5 class="font-weight-bold text-muted mb-0 small" style="text-align:center;">A warm community for passionate watch lovers</h5>
+                              <div class="d-flex align-items-center justify-content-between mt-1 flex-column">
+                                <h4 class= "my-2">Created August 30, 2020</h4>
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
+                              </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="community rules">
+                    <ul class="list-group shadow">
+                        <!-- list group item-->
+                        <li class="list-group-item">
+                          <!-- Custom content-->
+                          <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="media-body order-2 order-lg-1">
+                              <h3 class="mt-0 font-weight-bold mb-2 text-uppercase" style="text-align:center;">About Community</h3>
+                              <h5 class="font-weight-bold text-muted mb-0 small" style="text-align:center;">A warm community for passionate watch lovers</h5>
+                              <div class="d-flex align-items-center justify-content-between mt-1 flex-column">
+                                <h4 class= "my-2">Created August 30, 2020</h4>
+                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
+                              </div>
+                        </li>
+                    </ul>
+                </div>
+           </div>
+       </div>
+    </div>
 
 
 {% endif %}

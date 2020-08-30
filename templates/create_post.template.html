@@ -13,7 +13,25 @@
                 {% set previous_values = {} %}
             {% endif %}
 
-            {% include 'forms/post_form.template.html' %}
+            <div>
+                <label> Title</label>
+                <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
+                {% if 'invalid_title' in errors %}
+                <div class="invalid-feedback">
+                    {{errors.invalid_tile}}
+                </div>
+                {%endif%}
+            </div>
+            <div>
+                <label>Content</label>
+                <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" ></textarea>
+                {% if 'invalid_content' in errors  %}
+                <div class="invalid-feedback">
+                    {{errors.invalid_content}}
+                </div>
+                {% endif %}
+            </div>
+
             <input type="submit" value="POST" class="btn btn-primary">
         {% endwith %}
     </form>
