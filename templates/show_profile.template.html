@@ -2,6 +2,47 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
+<div id="profile-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-profile my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">MY PROFILE</h5>
+                        <div class="profile-details">
+                            <figure class="rounded p-3 bg-white shadow-sm" id="profile-image-area">
+                                <img src="../static/images/profile-icon.png" alt="profile-icon" class="card-img-top" id="profile-icon-image">
+                                <figcaption class="p-4 card-img-bottom">
+                                  <h2 class="h5 font-weight-bold mb-2 font-bold text-center" id="profile-username">{{current_user.username}}</h2>
+                                  <p class="mb-0 text-small text-muted mb-2 font-bold text-center">Member Since {{current_profile.Date_Joined.strftime("%Y-%m-%d")}}</p>
+                                  <hr></hr>
+                                  <div class="user-particulars">
+                                    <h4 class="mb-3 text-center" id="text-user-details"> MY DETAILS</h4>
+                                    <ul class="list-unstyled" id="list-details">
+                                        <li class="mb-2">NAME:   {{current_profile.Full_Name}}</li>
+                                        <li class="mb-2">COUNTRY:   {{current_profile.Country}}</li>
+                                        <li class="mb-2">DATE OF BIRTH:  {{current_profile.Date_Of_Birth.strftime("%Y-%m-%d")}}</li>
+                                        <li class="list-group-item mb-2 text-center">Bio
+                                            <div class="bio-content mt-2 " style="text-align:left;">
+                                                {{current_profile.Bio}}
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <a href="{{ url_for('edit_user_profile') }}" class="btn btn-danger btn-block btn-lg">Edit Profile</a>
+                                  </div>
+                                </figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endif %}
+{% endblock %}
+
 <div>
     Current User Logged In Email :{{current_user.id}}
 </div>
@@ -25,5 +66,3 @@
 </div>
 
 <a href="{{ url_for('edit_user_profile') }}" class="btn btn-success btn-lg">Edit Profile</a>
-{% endif %}
-{% endblock %}
