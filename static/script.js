@@ -49,8 +49,15 @@ $('#page2-btn').click(function(){
     $(`#page-${pageNumber}`).removeClass('hidden');
 })
 
+$('#filter-text-recent').click(function(event){
+    event.preventDefault();
+    window.location='/home?sort_on=Date_Posted'
+})
 
-
+$('#filter-text-popular').click(function(event){
+    event.preventDefault();
+    window.location='/home?sort_on=Votes'
+})
 
 
 $(function(){
@@ -81,5 +88,6 @@ $(function(){
         $('#sidebar,#content').toggleClass('active')
     })
 
+     
 
 })
