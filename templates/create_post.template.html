@@ -1,19 +1,18 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-<div id="register-area">
+<div id="post-area">
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-register my-5">
+                <div class="card card-post my-5">
                     <div class="card-body">
                         <h5 class="card-title text-center">CREATE POST</h5>
-                        <form method="POST">
+                        <form method="POST" class="post-form">
                             {%with%}
                                 {% if not previous_values %}
                                     {% set previous_values = {} %}
                                 {% endif %}
-                    
                                 <div>
                                     <label> Title</label>
                                     <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
@@ -32,7 +31,6 @@
                                     </div>
                                     {% endif %}
                                 </div>
-                    
                                 <input type="submit" value="POST" class="btn btn-danger btn-block">
                                 <div class="text-center">
                                     <a class="small" href="{{url_for('home')}}" style="color:inherit;">Back to Home</a></div>
@@ -44,5 +42,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}
