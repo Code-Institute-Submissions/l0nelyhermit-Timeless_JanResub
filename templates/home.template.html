@@ -55,7 +55,7 @@
                         </li>
                         
                     </ul>
-                    <form class="form-inline my-2 my-lg-0" id="searchbar-nav"> <input class="form-control mr-sm-2" type="text" placeholder="SEARCH POST"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">SEARCH</button> </form>
+                    <form class="form-inline my-2 my-lg-0" method="POST" id="searchbar-nav"> <input class="form-control mr-sm-2" name='search' value='{{required_search}}' type="text" placeholder="SEARCH POST"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">SEARCH</button> </form>
                   </div>
         </nav>
 
@@ -70,21 +70,18 @@
             </div>
         </div>
 
-       <div class="row">
+       <div class="row" >
            <div class="col-md-9 pr-0">
                 <div class="list-group-item" id="navigation-post-area">
                     <div class="filter-settings">
-                        <h5 class="filter-text mr-2 pt-1">Most Recent</h5>
-                        <input type="checkbox" checked data-toggle="toggle" data-on="Most Popular" data-off="Most Recent" data-onstyle="secondary" data-offstyle="secondary" data-height='30' data-width='140'>
-                        <h5 class="filter-text ml-2 pt-1"> Most Popular</h5>
-                    </div>
-                    <div class="navigation-button-area">
-                        <button type="button" class="btn btn-secondary" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
+                        <h5 id="filter-text-recent" class="btn btn-lg btn-secondary mr-1 pt-1 text-uppercase">Most Recent</h5>
+                        <h5 id="filter-text-popular"class="btn btn-lg btn-secondary pt-1 text-uppercase"> Most Popular</h5>
                     </div>
                 </div>
-                <div class="posts-listings-segment mx-auto">
+                <div class="posts-segment mx-auto" id="posts-area">
                     <ul class="list-group shadow">
-                        {% for each_post in posts %}
+                      {% set sort_on = request.args.sort_on|default('Votes') %}
+                        {% for each_post in posts|sort(attribute=sort_on, reverse= True) %}
                             <li class="list-group-item">
                                 <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
                                     <div class="votes-area mr-3">
@@ -96,7 +93,11 @@
                                       <h5 class="mt-0 font-weight-bold mb-2">{{each_post.Title}}</h5>
                                       <p class="font-bold text-muted mb-0 small">{{each_post.Content|truncate(length=255,end="...")}}</p>
                                       <div class="d-flex align-items-center justify-content-between mt-1">
-                                        <h6 class="font-weight-bold my-2">Posted By: {{each_post.Username}}</h6>
+                                        <div class="more-post-details">
+                                          <h6 class="font-weight-bold my-2">Posted by: {{each_post.Username}}</h6>
+                                          <h6 class="font-weight-bold my-2"><i class="fa fa-comment mr-2" aria-hidden="true"></i>{{each_post.Comments|length}} comments</h6>
+                                        </div>
+    
                                         <h6 class="font-weight-bold my-2">Time Posted: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
                                       </div>
                                 </div>
@@ -115,27 +116,79 @@
                           <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                             <div class="media-body order-2 order-lg-1">
                               <h3 class="mt-0 font-weight-bold mb-2 text-uppercase" style="text-align:center;">About Community</h3>
-                              <h5 class="font-weight-bold text-muted mb-0 small" style="text-align:center;">A warm community for passionate watch lovers</h5>
+                              <h5 class="font-weight-bold text-muted mb-0 small" style="text-align:center;">
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h5>
                               <div class="d-flex align-items-center justify-content-between mt-1 flex-column">
                                 <h4 class= "my-2">Created August 30, 2020</h4>
-                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
+                                <button type="button" class="btn btn-secondary btn-block text-uppercase" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
                               </div>
                         </li>
                     </ul>
                 </div>
-                <div class="community rules">
+                <div class="community-rules">
                     <ul class="list-group shadow">
                         <!-- list group item-->
                         <li class="list-group-item">
                           <!-- Custom content-->
                           <div class="media align-items-lg-center flex-column flex-lg-row p-3">
                             <div class="media-body order-2 order-lg-1">
-                              <h3 class="mt-0 font-weight-bold mb-2 text-uppercase" style="text-align:center;">About Community</h3>
-                              <h5 class="font-weight-bold text-muted mb-0 small" style="text-align:center;">A warm community for passionate watch lovers</h5>
-                              <div class="d-flex align-items-center justify-content-between mt-1 flex-column">
-                                <h4 class= "my-2">Created August 30, 2020</h4>
-                                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='{{url_for('create_post')}}';">Create Post</button>
-                              </div>
+                              <h3 class="mt-0 font-weight-bold mb-2 text-uppercase" style="text-align:center;">Forum Rules</h3>
+                              <div class="font-weight-bold text-muted mb-0 small" style="text-align:center;">
+                                <div id="accordionExample" class="accordion shadow">
+
+                                    <!-- Accordion item 1 -->
+                                    <div class="card">
+                                      <div id="headingOne" class="card-header bg-white shadow-sm border-0">
+                                        <h6 class="mb-0 font-weight-bold"><a href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne" class="d-block position-relative text-dark text-uppercase collapsible-link py-2">No Counterfeits or Replicas</a></h6>
+                                      </div>
+                                      <div id="collapseOne" aria-labelledby="headingOne" data-parent="#accordionExample" class="collapse">
+                                        <div class="card-body p-5">
+                                          <p class="font-weight-light m-0">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                            
+                                    <!-- Accordion item 2 -->
+                                    <div class="card">
+                                      <div id="headingTwo" class="card-header bg-white shadow-sm border-0">
+                                        <h6 class="mb-0 font-weight-bold"><a href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">Uncivil Discussion</a></h6>
+                                      </div>
+                                      <div id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordionExample" class="collapse">
+                                        <div class="card-body p-5">
+                                          <p class="font-weight-light m-0">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                            
+                                    <!-- Accordion item 3 -->
+                                    <div class="card">
+                                      <div id="headingThree" class="card-header bg-white shadow-sm border-0">
+                                        <h6 class="mb-0 font-weight-bold"><a href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" class="d-block position-relative collapsed text-dark text-uppercase collapsible-link py-2">Posting Rules Violation</a></h6>
+                                      </div>
+                                      <div id="collapseThree" aria-labelledby="headingThree" data-parent="#accordionExample" class="collapse">
+                                        <div class="card-body p-5">
+                                          <p class="font-weight-light m-0">
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                                            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                                            Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </div>
+                            
+                                  </div>
+                                </div>
                         </li>
                     </ul>
                 </div>
@@ -143,6 +196,8 @@
        </div>
     </div>
 
+ <script>
+ </script>
 
 {% endif %}
 {% endblock %}

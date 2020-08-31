@@ -792,7 +792,27 @@ def downvote_post():
     return redirect(url_for('home'))
 
 
-    
+# Search Functionality for the Posts
+@app.route('/home',methods=['POST'])
+@flask_login.login_required
+def search():
+    # Get all the search terms
+    # Search via post title or username
+    if request.method =='POST':
+        required_title = request.form.get('search') or ''
+    # Creating the query based on the search terms
+        criteria = {}
+
+        if required_title:
+            criteria['Title'] = {
+                '$regex':required_title,
+                '$options': 'i'
+            }
+
+        
+        all_posts = db.Posts.find(criteria)
+        return render_template('home.template.html',posts=all_posts)
+        
 
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),

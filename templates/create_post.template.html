@@ -1,38 +1,48 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-    <ul>
-    {% for key, each_error in errors.items() %}
-        <li>{{each_error}}</li>
-    {% endfor %}
-    </ul>
-
-    <form method="POST">
-        {%with%}
-            {% if not previous_values %}
-                {% set previous_values = {} %}
-            {% endif %}
-
-            <div>
-                <label> Title</label>
-                <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
-                {% if 'invalid_title' in errors %}
-                <div class="invalid-feedback">
-                    {{errors.invalid_tile}}
+<div id="register-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-register my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">CREATE POST</h5>
+                        <form method="POST">
+                            {%with%}
+                                {% if not previous_values %}
+                                    {% set previous_values = {} %}
+                                {% endif %}
+                    
+                                <div>
+                                    <label> Title</label>
+                                    <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
+                                    {% if 'invalid_title' in errors %}
+                                    <div class="invalid-feedback">
+                                        {{errors.invalid_tile}}
+                                    </div>
+                                    {%endif%}
+                                </div>
+                                <div>
+                                    <label>Content</label>
+                                    <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" ></textarea>
+                                    {% if 'invalid_content' in errors  %}
+                                    <div class="invalid-feedback">
+                                        {{errors.invalid_content}}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                    
+                                <input type="submit" value="POST" class="btn btn-danger btn-block">
+                                <div class="text-center">
+                                    <a class="small" href="{{url_for('home')}}" style="color:inherit;">Back to Home</a></div>
+                            {% endwith %}
+                        </form>
+                    </div>
                 </div>
-                {%endif%}
             </div>
-            <div>
-                <label>Content</label>
-                <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" ></textarea>
-                {% if 'invalid_content' in errors  %}
-                <div class="invalid-feedback">
-                    {{errors.invalid_content}}
-                </div>
-                {% endif %}
-            </div>
+        </div>
+    </div>
+</div>
 
-            <input type="submit" value="POST" class="btn btn-primary">
-        {% endwith %}
-    </form>
 {% endblock %}
