@@ -1,5 +1,5 @@
-<div>
-    <label> Title</label>
+<div class="form-group">
+    <label class="control-label" id="form-labels"> Title</label>
     <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
     {% if 'invalid_title' in errors %}
     <div class="invalid-feedback">
@@ -7,9 +7,9 @@
     </div>
     {%endif%}
 </div>
-<div>
-    <label>Content</label>
-    <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" >{{user_post.Content}}</textarea>
+<div class="form-group">
+    <label class="control-label" id="form-labels">Content</label>
+    <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" >{{previous_values.Content}}</textarea>
     {% if 'invalid_content' in errors  %}
     <div class="invalid-feedback">
         {{errors.invalid_content}}

@@ -1,16 +1,31 @@
 {% extends 'base.template.html'%}
 
 {% block content %}
-    <div class="container">
-        
-    <h3>Updating Post: {{user_post.Title}}</h3>
-
-    <form method="POST">
-        {% with %}
-            {% set previous_values= user_post %}
-            {% include 'forms/post_form.template.html' %}
-        {% endwith %}
-        <input type="submit" value="update" class="btn btn-primary"/>
-    </form>
+{% if current_user.is_authenticated %}
+<div id="edit-post-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-edit-post my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">CREATE POST</h5>
+                        <form method="POST" class="edit-post-form">
+                            {%with%}
+                                {% if not previous_values %}
+                                    {% set previous_values = user_post %}
+                                {% endif %}
+                                {% include 'forms/post_form.template.html' %}
+                                <input id="update-form-button" type="submit" value="UPDATE POST" class="btn btn-danger btn-block">
+                                <div class="text-center">
+                                    <a class="small" href="{{url_for('show_user_posts')}}" style="color:inherit;">Back to My Posts</a></div>
+                            {% endwith %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
+{% endif %}
 {% endblock %}
+

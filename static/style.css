@@ -157,7 +157,7 @@ body{
     line-height:36px;
     width:100%;
 }
-
+#edit-post-area,
 #update-profile-area,
 #post-area,
 #register-area{
@@ -178,6 +178,18 @@ body{
     height:130vh;
 }
 
+#edit-listing-area,
+#user-listings-area{
+    background-image: url(../static/images/forms-background.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:150vh;
+}
+
+.card-edit-listing,
+.card-user-listing,
+.card-edit-post,
 .card-listing,
 .card-profile-update,
 .card-profile,
@@ -189,9 +201,9 @@ body{
 }
 
 
-
-
-
+.card-edit-listing .card-title,
+.card-user-listing .card-title,
+.card-edit-post .card-title,
 .card-user-post .card-title,
 .card-listing .card-title,
 .card-profile-update .card-title,
@@ -204,6 +216,10 @@ body{
     font-family: 'Ubuntu',sans-serif;
     font-weight: bold;
 }
+
+.card-edit-listing .card-body,
+.card-user-listing .card-body,
+.card-edit-post .card-body,
 .card-user-post .card-body,
 .card-listing .card-body,
 .card-profile-update .card-body,
@@ -213,7 +229,8 @@ body{
     padding:2rem;
 }
 
-
+.edit-listing.form,
+.edit-post-form,
 .form-listing,
 .update-profile-form,
 .form-post,
@@ -370,6 +387,8 @@ body{
     height:25vh;
     width:40%;
 }
+
+.filter-settings,
 #profile-username,
 #text-user-details{
     font-size: 20px;
@@ -405,12 +424,22 @@ body{
     color:inherit;
 }
 
+.pagination-listings,
 .pagination-posts{
     display:flex;
     flex-direction: row;
 }
 
+
 #page-number-layout{
     display:flex;
     flex-direction: row;
+    justify-content: center;
+}
+
+#update-form-button,
+.user-options{
+    font-family: 'Ubuntu',sans-serif;
+    font-weight:bold;
+    font-size:14px;
 }

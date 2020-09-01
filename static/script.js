@@ -63,6 +63,7 @@ $('#page2-btn').click(function(){
     $(`#page-${pageNumber}`).removeClass('hidden');
 })
 
+// Main Forum Filters
 $('#filter-text-recent').click(function(event){
     event.preventDefault();
     window.location='/home?sort_on=Date_Posted'
@@ -71,6 +72,21 @@ $('#filter-text-recent').click(function(event){
 $('#filter-text-popular').click(function(event){
     event.preventDefault();
     window.location='/home?sort_on=Votes'
+})
+// MarketPlace Filters
+$('#filter-text-recent-listings').click(function(event){
+    event.preventDefault();
+    window.location='/marketplace?sort_on=Date_Posted'
+})
+
+$('#filter-text-likes').click(function(event){
+    event.preventDefault();
+    window.location='/marketplace?sort_on=Likes'
+})
+
+$('#filter-text-price-cheap').click(function(event){
+    event.preventDefault();
+    window.location='/marketplace?sort_on=Price'
 })
 
 

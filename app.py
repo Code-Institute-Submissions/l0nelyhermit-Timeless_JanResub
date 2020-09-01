@@ -628,17 +628,14 @@ def edit_user_posts(post_id):
 
 
 # Allow users to Delete their own post 
-@app.route('/delete/<post_id>',methods=['GET','POST'])
+@app.route('/delete/<post_id>')
 @flask_login.login_required
 def delete_user_posts(post_id):
-    if request.method == "GET":
-        return render_template('delete_user_post.template.html')
-    else:
-        db.Posts.remove({
+    db.Posts.remove({
             '_id':ObjectId(post_id)
         })
-        flash("Your Post has been removed successfully","success")
-        return redirect(url_for('show_user_posts'))
+    flash("Your Post has been removed successfully","success")
+    return redirect(url_for('show_user_posts'))
 
 
 
@@ -830,6 +827,8 @@ def marketplace():
     listings= db.Listings.find()
     return render_template('marketplace.template.html',listings=listings)
 
+
+
 brands_list=[
     'Please Select A Brand',
     'Rolex',
@@ -960,7 +959,7 @@ def edit_listing(listing_id):
     })
     get_id = listing['_id']
     if request.method =='GET':
-        return render_template('edit_listing.template.html',listing=listing,countries=country_list,
+        return render_template('edit_listing.template.html',listing=listing,countries=country_list,brands=brands_list,
                                 cloud_name=CLOUD_NAME,upload_preset=UPLOAD_PRESET)
     else:
         # Retrieve the updated information from the form
@@ -1027,10 +1026,24 @@ def delete_listing(listing_id):
 
 @app.route('/mylistings')
 def show_user_listings():
+    # Get Total number of results based on database
+    number_of_results = db.Listings.find({
+        'Username':flask_login.current_user.username
+    }).count()
+    page_size = 2
+    number_of_pages = math.ceil(number_of_results/page_size)-1
+    # Get the current page number from the args get request, if it does not exist set it to zero
+    page_number = request.args.get('page_number') or '0'
+    page_number = int(page_number)
+    # calculate how many results will be skipped depending on page number
+    number_to_skip = page_number * page_size
+
     user_listings = db.Listings.find({
         'Username':flask_login.current_user.username
-    })
-    return render_template('user_listings.template.html',user_listings=user_listings)
+    }).skip(number_to_skip).limit(page_size)
+
+    return render_template('user_listings.template.html',user_listings=user_listings,
+                            page_number=page_number,number_of_pages=number_of_pages)
 
 
 
@@ -1043,6 +1056,28 @@ def show_listing(listing_id):
     if request.method =="GET":
         return render_template('show_listing.template.html',listing=listing)
 
+
+
+# Search Functionality for the Posts
+@app.route('/marketplace',methods=['POST'])
+@flask_login.login_required
+def search_listings_marketplace():
+    # Get all the search terms
+    # Search via post title or username
+    if request.method =='POST':
+        required_title = request.form.get('search') or ''
+    # Creating the query based on the search terms
+        criteria = {}
+
+        if required_title:
+            criteria['Title'] = {
+                '$regex':required_title,
+                '$options': 'i'
+            }
+
+        
+        all_listings = db.Listings.find(criteria)
+        return render_template('marketplace.template.html',listings=all_listings)
 
 @app.route('/search',methods=['GET','POSt'])
 def search():
