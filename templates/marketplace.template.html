@@ -71,11 +71,11 @@
                             <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('home')}}">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('create_post')}}">Create Post</a>
+                            <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('create_listing')}}">Create Listing</a>
                         </li>
                         
                     </ul>
-                    <form class="form-inline my-2 my-lg-0" method="POST" id="searchbar-nav"> <input class="form-control mr-sm-2" name='search' value='{{required_search}}' type="text" placeholder="SEARCH POST"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">SEARCH</button> </form>
+                    <form class="form-inline my-2 my-lg-0" method="POST" id="searchbar-nav"> <input class="form-control mr-sm-2" name='search' value='{{required_search}}' type="text" placeholder="SEARCH LISTING"> <button class="btn btn-secondary my-2 my-sm-0" type="submit">SEARCH</button> </form>
                   </div>
         </nav>
 
@@ -94,15 +94,15 @@
            <div class="col-md-9 pr-0">
                 <div class="list-group-item" id="navigation-post-area">
                     <div class="filter-settings">
-                        <h5 id="filter-text-recent" class="btn btn-lg btn-secondary mr-1 pt-1 text-uppercase">Most Recent</h5>
+                        <h5 id="filter-text-recent-listings" class="btn btn-lg btn-secondary mr-1 pt-1 text-uppercase">Most Recent</h5>
                         <h5 id="filter-text-likes"class="btn btn-lg btn-secondary pt-1 text-uppercase mr-1"> Most Likes</h5>
-                        <h5 id="filter-text-price-expensive"class="btn btn-lg btn-secondary pt-1 text-uppercase mr-1"> Filter By Price (Expensive First)</h5>
                         <h5 id="filter-text-price-cheap"class="btn btn-lg btn-secondary pt-1 text-uppercase"> Filter By Price (Cheapest First)</h5>
                     </div>
                 </div>
                 <div class="posts-segment mx-auto" id="posts-area">
                     <ul class="list-group shadow">
-                      {% set sort_on = request.args.sort_on|default('') %}
+                      {% set order = request.args.order|default(True) %}
+                      {% set sort_on = request.args.sort_on|default('Date_Posted') %}
                         {% for each_listing in listings|sort(attribute=sort_on, reverse= True) %}
                             <li class="list-group-item">
                                 <div class="media align-items-lg-center flex-column flex-lg-row p-3" >

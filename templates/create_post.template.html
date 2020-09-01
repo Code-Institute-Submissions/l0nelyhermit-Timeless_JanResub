@@ -1,6 +1,7 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
+{% if current_user.is_authenticated %}
 <div id="post-area">
     <div class="container-fluid">
         <div class="row">
@@ -10,12 +11,9 @@
                         <h5 class="card-title text-center">CREATE POST</h5>
                         <form method="POST" class="post-form">
                             {%with%}
-                                {% if not previous_values %}
-                                    {% set previous_values = {} %}
-                                {% endif %}
                                 <div>
                                     <label> Title</label>
-                                    <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}" value="{{previous_values.Title}}">
+                                    <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}">
                                     {% if 'invalid_title' in errors %}
                                     <div class="invalid-feedback">
                                         {{errors.invalid_tile}}
@@ -42,4 +40,5 @@
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
