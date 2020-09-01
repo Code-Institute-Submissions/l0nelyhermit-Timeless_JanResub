@@ -95,7 +95,7 @@ $(function(){
 
 
     $('#summernote').summernote({
-        placeholder: 'Start creating your note here!',
+        placeholder: 'Write Something!',
         tabsize: 2,
         height: 300,
         stripTags: ['style'],

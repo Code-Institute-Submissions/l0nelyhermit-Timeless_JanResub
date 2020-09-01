@@ -157,6 +157,7 @@ body{
     line-height:36px;
     width:100%;
 }
+#edit-comment-area,
 #edit-post-area,
 #update-profile-area,
 #post-area,
@@ -178,6 +179,7 @@ body{
     height:130vh;
 }
 
+
 #edit-listing-area,
 #user-listings-area{
     background-image: url(../static/images/forms-background.jpg);
@@ -187,6 +189,16 @@ body{
     height:150vh;
 }
 
+#show-post-area{
+    background-image: url(../static/images/forms-background.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:220vh;
+}
+
+.card-edit-comment,
+.card-show-post,
 .card-edit-listing,
 .card-user-listing,
 .card-edit-post,
@@ -200,7 +212,8 @@ body{
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.1);
 }
 
-
+.card-edit-comment .card-title,
+.card-show-post .card-title,
 .card-edit-listing .card-title,
 .card-user-listing .card-title,
 .card-edit-post .card-title,
@@ -217,6 +230,8 @@ body{
     font-weight: bold;
 }
 
+.card-edit-comment .card-body,
+.card-show-post .card-body,
 .card-edit-listing .card-body,
 .card-user-listing .card-body,
 .card-edit-post .card-body,
@@ -229,6 +244,7 @@ body{
     padding:2rem;
 }
 
+.edit-comment-form,
 .edit-listing.form,
 .edit-post-form,
 .form-listing,
@@ -424,6 +440,7 @@ body{
     color:inherit;
 }
 
+.pagination-comments,
 .pagination-listings,
 .pagination-posts{
     display:flex;
@@ -437,9 +454,43 @@ body{
     justify-content: center;
 }
 
+#create-listing-community-area,
+#create-post-community-area,
 #update-form-button,
 .user-options{
     font-family: 'Ubuntu',sans-serif;
     font-weight:bold;
     font-size:14px;
+}
+
+.header-show-post{
+    display: flex;
+    justify-content: center;
+}
+#title-area-show-post{
+    font-family: 'Ubuntu',sans-serif;
+    font-weight:bold;
+    font-size:40px;
+
+}
+.vote-area-post{
+    position: absolute;
+    left:15px;
+    top:15px;
+    display:flex;
+    flex-direction: column;
+    font-family: 'Ubuntu',sans-serif;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.posts-details-extra{
+    font-family: 'Ubuntu',sans-serif;
+    font-weight:bold;
+    font-size:14px;
+}
+
+.extra-comment-details{
+    display:flex;
+    flex-direction: column;
 }
