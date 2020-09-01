@@ -1,0 +1,25 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="container">
+    <div>
+        <a href="" class="upvote"><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+            {{listing.Likes}}
+        <a href="" class="downvote"><i class="fa fa-arrow-down" style="font-size:24px;"></i></a>
+    </div>
+        <div>
+            <div>
+                <img src="{{listing.Image_URL}}"/>
+            </div>
+            <h2> {{listing.Title}} </h2>
+            <div>
+                {{listing.Description}}
+            <div>
+                <h4>Price: {{listing.Price}}</h4>
+                <h5>Posted By {{listing.Username}} </h5>
+                <h5>Time of Post:{{listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+            </div>
+        </div>
+{% endif %}
+{% endblock %}

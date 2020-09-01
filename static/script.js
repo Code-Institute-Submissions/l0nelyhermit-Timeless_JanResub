@@ -33,6 +33,20 @@ function downvote(a){
     return false;
 }
 
+function like(a){
+    let likes = parseInt($(a).parent().children('div').text())
+    let like_id =$(a).data('listingid')
+    likes += 1;
+    $(a).parent().children('div').text(likes);
+    $.ajax({
+        url:'/like',
+        type:'POST',
+        contentType: 'application/json;charset=UTF-8',
+        dataType:"json",
+        data: JSON.stringify({'ListingID':like_id,
+                              'Likes': likes})
+    });
+}
 
 function hideAllPages() {
     let pages = $(".page");

@@ -29,9 +29,9 @@
                 <i class="fa fa-shopping-cart fa-2x mr-3" aria-hidden="true"></i>Marketplace</a>
             </li>
             <li class="nav-item" id="navigation-links">
-              <a href="{{ url_for('search') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
-                <i class="fa fa-search fa-2x mr-3" aria-hidden="true"></i>Global Search</a>
-            </li>
+                <a href="{{ url_for('search') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                    <i class="fa fa-search fa-2x mr-3" aria-hidden="true"></i>Global Search</a>
+              </li>
             <li class="nav-item" id="navigation-links">
                 <a href="{{ url_for('show_user_posts') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
                   <i class="fa fa-sticky-note-o fa-2x mr-3" aria-hidden="true"></i>My Posts</a>
@@ -95,30 +95,40 @@
                 <div class="list-group-item" id="navigation-post-area">
                     <div class="filter-settings">
                         <h5 id="filter-text-recent" class="btn btn-lg btn-secondary mr-1 pt-1 text-uppercase">Most Recent</h5>
-                        <h5 id="filter-text-popular"class="btn btn-lg btn-secondary pt-1 text-uppercase"> Most Popular</h5>
+                        <h5 id="filter-text-likes"class="btn btn-lg btn-secondary pt-1 text-uppercase mr-1"> Most Likes</h5>
+                        <h5 id="filter-text-price-expensive"class="btn btn-lg btn-secondary pt-1 text-uppercase mr-1"> Filter By Price (Expensive First)</h5>
+                        <h5 id="filter-text-price-cheap"class="btn btn-lg btn-secondary pt-1 text-uppercase"> Filter By Price (Cheapest First)</h5>
                     </div>
                 </div>
                 <div class="posts-segment mx-auto" id="posts-area">
                     <ul class="list-group shadow">
-                      {% set sort_on = request.args.sort_on|default('Votes') %}
-                        {% for each_post in posts|sort(attribute=sort_on, reverse= True) %}
+                      {% set sort_on = request.args.sort_on|default('') %}
+                        {% for each_listing in listings|sort(attribute=sort_on, reverse= True) %}
                             <li class="list-group-item">
                                 <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
-                                    <div class="votes-area mr-3">
-                                        <a class ='upvote-button' type="submit" onclick=upvote(this)  data-postid="{{each_post._id}}" ><i class="fa fa-arrow-up" style="font-size:36px;"></i></a>
-                                        <div class="votecount ml-2">{{each_post.Votes}}</div>
-                                        <a class= 'downvote-button' href="" onclick=downvote(this) data-postid="{{each_post._id}}" ><i class="fa fa-arrow-down" style="font-size:36px"></i></a>
+                                    <div class="image-area mr-3 align-items-center" >
+                                        <img src="{{each_listing.Image_URL}}"  width="200" class="ml-lg-3 order-1 order-lg-2 mb-2">
+                                        <div class="like-area">
+                                            <a class ='like-button mr-2' type="submit" onclick=like(this)  data-listingid="{{each_listing._id}}" ><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>
+                                            <div class="like-counter"> {{each_listing.Likes}}</div>
+                                        </div>
                                     </div>
-                                    <div class="media-body order-2 order-lg-1" onclick="window.location.href='{{ url_for('show_post',post_id = each_post._id)}}'">
-                                      <h5 class="mt-0 font-weight-bold mb-2">{{each_post.Title}}</h5>
-                                      <p class="font-bold text-muted mb-0 small">{{each_post.Content|truncate(length=255,end="...")}}</p>
+                                    <div class="media-body order-2 order-lg-1" onclick="window.location.href='{{ url_for('show_listing',listing_id = each_listing._id)}}'">
+                                      <div class=" title-details">
+                                        <h5 class="mt-0 font-weight-bold mb-2">{{each_listing.Title}}</h5>
+                                        <div class="watch-details">
+                                            <h6 class="mt-0 font-weight-bold mr-2">Brand: {{each_listing.Brand}}</h6>
+                                            <h6 class="mt-0 font-weight-bold ">Model: {{each_listing.Model}}</h6>
+                                        </div>
+                                      </div>
+                                      <p class="font-bold text-muted mb-0 small">{{each_listing.Description|truncate(length=255,end="...")}}</p>
                                       <div class="d-flex align-items-center justify-content-between mt-1">
                                         <div class="more-post-details">
-                                          <h6 class="font-weight-bold my-2">Posted by: {{each_post.Username}}</h6>
-                                          <h6 class="font-weight-bold my-2"><i class="fa fa-comment mr-2" aria-hidden="true"></i>{{each_post.Comments|length}} comments</h6>
+                                          <h6 class="font-weight-bold my-2">Posted by: {{each_listing.Username}}</h6>
+                                          <h6 class="font-weight-bold my-2">Price: ${{each_listing.Price}}</h6>
                                         </div>
     
-                                        <h6 class="font-weight-bold my-2">Time Posted: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
+                                        <h6 class="font-weight-bold my-2">Time Posted: {{each_listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
                                       </div>
                                 </div>
                             </li>
@@ -215,4 +225,5 @@
            </div>
        </div>
     </div>
+
 {% endblock %}

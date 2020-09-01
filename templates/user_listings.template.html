@@ -1,0 +1,27 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated %}
+<div class="container">
+    {% for each_listing in user_listings %}
+        <div>
+            <div>
+                <img src="{{each_listing.Image_URL}}"/>
+            </div>
+            <h2>{{each_listing.Title}}</h2>
+            <div>
+                {{each_listing.Description}}
+            <div>
+                <h5>Price {{each_listing.Price}}</h5>
+                <h5>Posted By {{each_listing.Username}} </h5>
+                <h5>Time of Post: {{each_listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+            </div>
+            <a href="{{ url_for('edit_listing',listing_id = each_listing._id)}}">Edit Listing</a>
+            <a href="{{ url_for('delete_listing',listing_id = each_listing._id)}}">Delete Listing</a>
+            <div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endblock %}

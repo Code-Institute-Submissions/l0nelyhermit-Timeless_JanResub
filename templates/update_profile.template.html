@@ -1,15 +1,27 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-
-    <h3>Updating Profile : {{current_user.username}}</h3>
-
-    <form method="POST">
-        {% with %}
-            {% set previous_values=current_profile %}
-            {% include 'forms/profile_form.template.html' %}
-        {% endwith %}
-        <input type="submit" value="update" class="btn btn-primary"/>
-        <a href="{{url_for('show_user_profile')}}" class="btn btn-success"> Cancel</a>
-    </form>
+<div id="update-profile-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-profile-update my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">REGISTER</h5>
+                        <form method="POST" class="update-profile-form">
+                            {% with %}
+                            {% set previous_values=current_profile %}
+                            {% include 'forms/profile_form.template.html' %}
+                            <input type="submit" value="UPDATE" class="btn btn-lg btn-danger btn-block">
+                            <div class="text-center">
+                                <a class="small" href="{{url_for('show_user_profile')}}" style="color:inherit;">Cancel</a></div>
+                            {% endwith %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
+

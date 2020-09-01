@@ -157,7 +157,8 @@ body{
     line-height:36px;
     width:100%;
 }
-#profile-area,
+
+#update-profile-area,
 #post-area,
 #register-area{
     background-image: url(../static/images/forms-background.jpg);
@@ -166,6 +167,19 @@ body{
     background-repeat: no-repeat;
     height:100vh;
 }
+
+#user-post-area,
+#listing-area,
+#profile-area{
+    background-image: url(../static/images/forms-background.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:130vh;
+}
+
+.card-listing,
+.card-profile-update,
 .card-profile,
 .card-post,
 .card-register{
@@ -173,6 +187,14 @@ body{
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.1);
 }
+
+
+
+
+
+.card-user-post .card-title,
+.card-listing .card-title,
+.card-profile-update .card-title,
 .card-profile .card-title,
 .card-post .card-title,
 .card-register .card-title{
@@ -182,12 +204,18 @@ body{
     font-family: 'Ubuntu',sans-serif;
     font-weight: bold;
 }
+.card-user-post .card-body,
+.card-listing .card-body,
+.card-profile-update .card-body,
 .card-profile .card-body,
 .card-post .card-body,
 .card-register .card-body{
     padding:2rem;
 }
 
+
+.form-listing,
+.update-profile-form,
 .form-post,
 .form-register{
     width:100%;
@@ -310,6 +338,8 @@ body{
     flex-direction: row;
     justify-content: space-between;
 }
+
+.like-area,
 .filter-settings{
     display: flex;
     flex-direction: row;
@@ -354,4 +384,33 @@ body{
     font-family: 'Ubuntu',sans-serif;
     font-weight: bold;
     font-size: 20px;
+}
+
+.watch-details{
+    display:flex;
+    flex-direction: row;
+}
+
+.image-area{
+    display:flex;
+    flex-direction: column-reverse;
+}
+
+.user-options{
+    display:flex;
+    flex-direction: row;
+}
+
+#total-pages{
+    color:inherit;
+}
+
+.pagination-posts{
+    display:flex;
+    flex-direction: row;
+}
+
+#page-number-layout{
+    display:flex;
+    flex-direction: row;
 }
