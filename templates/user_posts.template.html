@@ -2,22 +2,53 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<div class="container">
-    {% for each_post in user_posts %}
-        <div>
-            <h2>{{each_post.Title}}</h2>
-            <div>
-                {{each_post.Content}}
-            <div>
-                <h5>Posted By {{each_post.Username}} </h5>
-                <h5>Time of Post: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
-            </div>
-            <a href="{{ url_for('edit_user_posts',post_id = each_post._id)}}">Edit Post</a>
-            <div>
-            <a href="{{ url_for('delete_user_posts',post_id = each_post._id)}}">Delete Post</a>
+<div id="user-post-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-user-post my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">USER POSTS</h5>
+                            {% for each_post in user_posts %}
+                            <div class="card mb-4">
+                                <div class="card-body p-5">
+                                  <h4 class="mb-2">{{each_post.Title}}</h4>
+                                  <h5 class="mb-4">Time of Post: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+                                  <div class="user-options">
+                                    <button class="btn btn-sm btn-danger mr-2" onclick="window.location.href='{{url_for('edit_user_posts',post_id=each_post._id)}}'">Edit Post</button>
+                                    <button class="btn btn-sm btn-danger" onclick="window.location.href='{{url_for('delete_user_posts',post_id=each_post._id)}}'">Delete Post</button>
+                                  </div>
+                                  <div class="post-content p-2">
+                                    <p class="font-italic">{{each_post.Content|truncate(length=255,end="...")}}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            {% endfor %}
+
+                            <div class="pagination-posts">
+                                <div class="col-sm-4 mr-2 ">
+                                    {% if page_number <= number_of_pages %}
+                                      <button class="btn btn-block btn-sm btn-danger mr-1"
+                                      onclick="window.location.href='{{url_for('show_user_posts',page_number=page_number+1)}}'">Next Page</button>
+                                    {% endif %}
+                                </div>
+                                <div class="col-sm-4 mr-2" id="page-number-layout">
+                                    {% for page_no in range(number_of_pages+1) %}
+                                    <a href="{{url_for('show_user_posts',page_number=page_no)}}"  id="total-pages">{{page_no+1}}</a>
+                                    {% endfor %}
+                                </div>
+                                <div class="col-sm-4 ">
+                                    {% if page_number > 0 %}
+                                    <button class="btn btn-block btn-sm btn-danger mr-1"
+                                    onclick="window.location.href='{{url_for('show_user_posts',page_number=page_number-1)}}'">Previous Page</button>
+                                    {% endif %}
+                                </div>
+                            </div>
+                    </div>
+                </div>
             </div>
         </div>
-    {% endfor %}
+    </div>
 </div>
 {% endif %}
 {% endblock %}
