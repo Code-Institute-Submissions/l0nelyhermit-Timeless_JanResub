@@ -2,46 +2,84 @@
 
 {% block content %}
 {% if current_user.is_authenticated %}
-<div class="container">
-    <div>
-        <a href="" class="upvote"><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
-            {{post.Votes}}
-        <a href="" class="downvote"><i class="fa fa-arrow-down" style="font-size:24px;"></i></a>
-    </div>
-        <div>
-            <h2> {{post.Title}} </h2>
-            <div>
-                {{post.Content}}
-            <div>
-                <h5>Posted By {{post.Username}} </h5>
-                <h5>Time of Post:{{post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
-            </div>
-            <div>
-                Comments: {{Comments}}
+<div id="show-post-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-show-post my-5">
+                    <div class="card-body">
+                        <div class="header-show-post">
+                            <h1 class="card-title center" id="title-area-show-post">
+                                {{post.Title}}
+                            </h1>
+                        </div>
+                        <div class="card mb-4">
+                            <div class="vote-area-post left">
+                                <a href="" class="upvote" style="color:inherit;"><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
+                                    {{post.Votes}}
+                                <a href="" class="downvote" style="color:inherit;"><i class="fa fa-arrow-down" style="font-size:24px;"></i></a>
+                            </div>
+                            <div class="card-body p-5">
+                              <h4 class="mb-4">{{post.Content}}</h4>
+                              <div class="posts-details-extra">
+                                <h5>Posted By:  {{post.Username}} </h5>
+                                <h5>Time of Post:   {{post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+                              </div>
+                            </div>
+                            <div class="comment-post-area">
+                                <form method="post">
+                                    <textarea id="summernote" name="editordata"></textarea>
+                                    <input type="submit" value="COMMENT" class="btn btn-danger btn-lg btn-block">
+                                    <div class="text-center">
+                                        <a class="small" href="{{url_for('home')}}" style="color:inherit;">Back to Home</a></div>
+                                </form>
+                            </div>
+                        </div>
+                        <hr class="solid">
+                        <h1 class="card-title left text-uppercase" id="title-area-show-post-comments">Comments</h1>
+                        {% for each_comment in post.Comments %}
+                        <div class="card mb-2">
+                            <div class="card-body p-5">
+                                <div class="extra-comment-details">
+                                    <h5 class="mr-2"> {{each_comment.Username}}</h5>
+                                    <p class="font-italic"> {{each_comment.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+                                </div>
+                              <div class="post-content p-2 mb-2">
+                                <p class="font-bold">{{each_comment.Content}}</p>
+                              </div>
+                              <div class="user-options">
+                                <button class="btn btn-sm btn-danger mr-2 text-uppercase" onclick="window.location.href='{{url_for('edit_comment',comment_id=each_comment._id)}}'">Edit</button>
+                                <button class="btn btn-sm btn-danger text-uppercase" onclick="window.location.href='{{url_for('delete_comment',comment_id=each_comment._id)}}'">Delete</button>
+                              </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        <div class="pagination-comments">
+                            <div class="col-sm-4 mr-2 ">
+                                {% if page_number <= number_of_pages %}
+                                  <button class="btn btn-block btn-sm btn-danger mr-1"
+                                  onclick="window.location.href='{{url_for('show_post',page_number=page_number+1,post_id=post._id)}}'">Next Page</button>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-4 mr-2" id="page-number-layout">
+                                {% for page_no in range(number_of_pages+1) %}
+                                <a href="{{url_for('show_post',page_number=page_no,post_id=post._id)}}" class="mr-2"  id="total-pages">{{page_no+1}}</a>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-4 ">
+                                {% if page_number > 0 %}
+                                <button class="btn btn-block btn-sm btn-danger mr-1"
+                                onclick="window.location.href='{{url_for('show_post',page_number=page_number-1,post_id=post._id)}}'">Previous Page</button>
+                                {% endif %}
+                            </div>
+                       </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <div>
-            <form method="post">
-                <textarea id="summernote" name="editordata"></textarea>
-                <input type="submit" value="COMMENT" class="btn btn-primary">
-            </form>
-        </div>
-    <div>
-        {% for each_comment in post.Comments%}
-        <div>
-            <h5 class="content">{{each_comment.Content}}</h5>
-            <div>
-                Posted By: {{each_comment.Username}}
-                Time: {{each_comment.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}
-            </div>
-            <a href="{{ url_for('edit_comment',comment_id = each_comment._id)}}">Edit</a>
-            <div>
-            <a href="{{ url_for('delete_comment',comment_id = each_comment._id)}}">Delete</a>
-            </div>
-        </div>
-        {% endfor %}
     </div>
 </div>
 
 {% endif %}
 {% endblock %}
+

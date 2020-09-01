@@ -1,11 +1,21 @@
 {% extends 'base.template.html'%}
 
 {% block content %}
-    <div class="container">
-
-    <form method="POST">
-            <textarea id="summernote" name="editordata">{{comment_post.Content}}</textarea>
-        <input type="submit" value="update" class="btn btn-primary"/>
-    </form>
+<div id="edit-comment-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-edit-comment my-5">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">EDIT COMMENT</h5>
+                        <form method="POST" class="edit-comment-form">
+                            <textarea id="summernote" name="editordata">{{comment_post.Content}}</textarea>
+                            <input type="submit" value="UPDATE" class="btn btn-danger btn-lg btn-block"/>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
 {% endblock %}

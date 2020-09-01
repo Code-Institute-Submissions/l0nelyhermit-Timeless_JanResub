@@ -538,11 +538,34 @@ def show_user_posts():
 @app.route('/post/<post_id>',methods=['GET','POST'])
 @flask_login.login_required
 def show_post(post_id):
-    post = db.Posts.find_one({
-            '_id':ObjectId(post_id)
-        })
     if request.method =="GET":
-        return render_template('show_post.template.html',post=post)
+        # Get Total number of results based on database
+        cursor = db.Posts.aggregate([
+            {
+                '$match':{'_id':ObjectId(post_id)}
+            },
+            {
+                '$project':{
+                    'count':{'$size':'$Comments'}
+                }
+            }
+        ])
+        results = list(cursor)
+        for i in results:
+                comment_data=i
+        number_of_comment = comment_data['count']
+        page_size = 3
+        number_of_pages = math.ceil(number_of_comment/page_size)-1
+        # Get the current page number from the args get request, if it does not exist set it to zero
+        page_number = request.args.get('page_number') or '0'
+        page_number = int(page_number)
+        # calculate how many results will be skipped depending on page number
+        number_to_skip = page_number * page_size
+
+        post = db.Posts.find_one({
+             '_id':ObjectId(post_id)
+            },{'Comments':{'$slice':[number_to_skip,page_size]}})
+        return render_template('show_post.template.html',post=post,page_number=page_number,number_of_pages=number_of_pages)
     else:
         # Allow Users to Post Comments
         # Retrieve Information From the Comment Box Form
