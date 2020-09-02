@@ -536,7 +536,6 @@ def show_user_posts():
 
 # Allow Users to click on each post to view the full content 
 @app.route('/post/<post_id>',methods=['GET','POST'])
-@flask_login.login_required
 def show_post(post_id):
     if request.method =="GET":
         # Get Total number of results based on database
@@ -565,6 +564,7 @@ def show_post(post_id):
         post = db.Posts.find_one({
              '_id':ObjectId(post_id)
             },{'Comments':{'$slice':[number_to_skip,page_size]}})
+            
         return render_template('show_post.template.html',post=post,page_number=page_number,number_of_pages=number_of_pages)
     else:
         # Allow Users to Post Comments
@@ -1048,6 +1048,7 @@ def delete_listing(listing_id):
 
 
 @app.route('/mylistings')
+@flask_login.login_required
 def show_user_listings():
     # Get Total number of results based on database
     number_of_results = db.Listings.find({

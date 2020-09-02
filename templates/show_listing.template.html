@@ -1,25 +1,37 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
-<div class="container">
-    <div>
-        <a href="" class="upvote"><i class="fa fa-arrow-up" style="font-size:24px;"></i></a>
-            {{listing.Likes}}
-        <a href="" class="downvote"><i class="fa fa-arrow-down" style="font-size:24px;"></i></a>
-    </div>
-        <div>
-            <div>
-                <img src="{{listing.Image_URL}}"/>
-            </div>
-            <h2> {{listing.Title}} </h2>
-            <div>
-                {{listing.Description}}
-            <div>
-                <h4>Price: {{listing.Price}}</h4>
-                <h5>Posted By {{listing.Username}} </h5>
-                <h5>Time of Post:{{listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>
+<div id="show-listing-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-show-listing my-5">
+                    <div class="card-body">
+                        <h2 class="card-title text-center">{{listing.Title}}</h2>
+                        <div class="media-body order-2 order-lg-1">
+                            <div class="image-area mr-3 align-items-center" >
+                                <img src="{{listing.Image_URL}}"  width="200" class="ml-lg-3 order-1 order-lg-2 mb-2">
+                              <div class="watch-details">
+                                  <h6 class="mt-0 font-weight-bold mr-2">Brand: {{listing.Brand}}</h6>
+                                  <h6 class="mt-0 font-weight-bold ">Model: {{listing.Model}}</h6>
+                              </div>
+                            </div>
+                            <p class="font-bold text-left mb-0">{{listing.Description}}</p>
+                            <div class="d-flex align-items-center justify-content-between mt-1">
+                              <div class="more-post-details">
+                                <h6 class="font-weight-bold my-2">Posted by: {{listing.Username}}</h6>
+                                <h6 class="font-weight-bold my-2">Price: ${{listing.Price}}</h6>
+                              </div>
+                              <h6 class="font-weight-bold my-2">Time Posted: {{listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
+                              </div>
+                              <div>
+                                  <button class="btn btn-lg btn-danger text-uppercase" id="chat-to-buy-btn" disabled>Chat To Buy</button>
+                              </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-{% endif %}
+    </div>
+</div>
 {% endblock %}

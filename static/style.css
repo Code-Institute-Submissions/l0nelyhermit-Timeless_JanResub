@@ -157,6 +157,14 @@ body{
     line-height:36px;
     width:100%;
 }
+
+#show-listing-area,
+#show-post-area,
+#edit-listing-area,
+#user-listings-area,
+#user-post-area,
+#listing-area,
+#profile-area,
 #edit-comment-area,
 #edit-post-area,
 #update-profile-area,
@@ -166,37 +174,10 @@ body{
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    height:100vh;
+    height:300vh;
 }
 
-#user-post-area,
-#listing-area,
-#profile-area{
-    background-image: url(../static/images/forms-background.jpg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height:130vh;
-}
-
-
-#edit-listing-area,
-#user-listings-area{
-    background-image: url(../static/images/forms-background.jpg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height:150vh;
-}
-
-#show-post-area{
-    background-image: url(../static/images/forms-background.jpg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height:220vh;
-}
-
+.card-show-listing,
 .card-edit-comment,
 .card-show-post,
 .card-edit-listing,
@@ -212,6 +193,7 @@ body{
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.1);
 }
 
+.card-show-listing .card-title
 .card-edit-comment .card-title,
 .card-show-post .card-title,
 .card-edit-listing .card-title,
@@ -230,6 +212,7 @@ body{
     font-weight: bold;
 }
 
+.card-show-listing .card-body,
 .card-edit-comment .card-body,
 .card-show-post .card-body,
 .card-edit-listing .card-body,
@@ -493,4 +476,22 @@ body{
 .extra-comment-details{
     display:flex;
     flex-direction: column;
+}
+
+
+#browse-guest-btn{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    width: 30%;
+    font-family: 'Roboto',sans-serif;
+    font-weight: 800;
+}
+
+
+#chat-to-buy-btn{
+    font-size: 20px;
+    font-family: 'Ubuntu',sans-serif;
+    font-weight: bold;
 }
