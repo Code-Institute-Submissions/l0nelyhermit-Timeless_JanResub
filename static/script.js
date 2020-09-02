@@ -84,10 +84,7 @@ $('#filter-text-likes').click(function(event){
     window.location='/marketplace?sort_on=Likes'
 })
 
-$('#filter-text-price-cheap').click(function(event){
-    event.preventDefault();
-    window.location='/marketplace?sort_on=Price'
-})
+
 
 
 $(function(){

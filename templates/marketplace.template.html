@@ -17,44 +17,52 @@
 
         <ul class="nav flex-column bg-white mb-0">
             <li class="nav-item" id="navigation-links">
-                <a href="{{url_for('home')}}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                <a href="{{url_for('home')}}" class="nav-link text-dark  bg-light " id="sidebar-nav-text">
                 <i class="fa fa-th-large fa-2x mr-4"></i>Home</a>
             </li>
 
             <li class="nav-item" id="navigation-links">
-              <a href="{{ url_for('marketplace') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+              <a href="{{ url_for('marketplace') }}" class="nav-link text-dark  bg-light " id="sidebar-nav-text">
                 <i class="fa fa-shopping-cart fa-2x mr-3" aria-hidden="true"></i>Marketplace</a>
             </li>
 
             <li class="nav-item" id="navigation-links">
-                <a href="{{ url_for('search') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                <a href="{{ url_for('search') }}" class="nav-link text-dark  bg-light " id="sidebar-nav-text">
                     <i class="fa fa-search fa-2x mr-3" aria-hidden="true"></i>Global Search</a>
             </li>
+            {% if current_user.is_authenticated %}
             <li class="nav-item" id="navigation-links">
-              <a href="{{url_for('show_user_profile')}}" class="nav-link text-dark bg-light text-uppercase" id="sidebar-nav-text">
+              <a href="{{url_for('show_user_profile')}}" class="nav-link text-dark bg-light" id="sidebar-nav-text">
               <i class="fa fa-id-card fa-2x mr-3" aria-hidden="true"></i>My Profile</a>
             </li>
             <li class="nav-item" id="navigation-links">
-                <a href="{{ url_for('show_user_posts') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+                <a href="{{ url_for('show_user_posts') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
                   <i class="fa fa-sticky-note-o fa-2x mr-3" aria-hidden="true"></i>My Posts</a>
                     
             </li>
             <li class="nav-item" id="navigation-links">
-              <a href="{{ url_for('show_user_listings') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+              <a href="{{ url_for('show_user_listings') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
                 <i class="fa fa-list fa-2x mr-3" aria-hidden="true"></i>My Listings</a>
             </li>
             <li class="nav-item" id="navigation-links">
-              <a href="{{ url_for('create_post') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+              <a href="{{ url_for('create_post') }}" class="nav-link text-dark  bg-light " id="sidebar-nav-text">
                   <i class="fa fa-pencil-square-o fa-2x mr-3" aria-hidden="true"></i>Create Post</a>
             </li>
             <li class="nav-item" id="navigation-links">
-              <a href="{{ url_for('create_listing') }}" class="nav-link text-dark  bg-light text-uppercase" id="sidebar-nav-text">
+              <a href="{{ url_for('create_listing') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
                 <i class="fa fa-tags fa-2x mr-3" aria-hidden="true"></i>Create Listing</a>
             </li>
             <li class="nav-item  px-3 small pb-4 mb-0" id="logout-area">
-                <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg btn-block text-uppercase">
+                <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg btn-block">
                     Logout</a>
             </li>
+            {% endif %}
+            {% if not current_user.is_authenticated %}
+            <li class="nav-item  px-3 small pb-4 mb-0" id="logout-area">
+              <a href="{{ url_for('login_user') }}" class="btn btn-success btn-lg btn-block">
+                  Login</a>
+            </li>
+            {% endif %}
         </ul>
     </div>
 
@@ -94,16 +102,14 @@
 
        <div class="row" >
            <div class="col-md-9 pr-0">
-                <div class="list-group-item" id="navigation-post-area">
+                <div class="list-group-item" id="navigation-listing-area">
                     <div class="filter-settings">
-                        <h5 id="filter-text-recent-listings" class="btn btn-lg btn-secondary mr-1 pt-1 text-uppercase">Most Recent</h5>
-                        <h5 id="filter-text-likes"class="btn btn-lg btn-secondary pt-1 text-uppercase mr-1"> Most Likes</h5>
-                        <h5 id="filter-text-price-cheap"class="btn btn-lg btn-secondary pt-1 text-uppercase"> Filter By Price (Cheapest First)</h5>
+                        <h5 id="filter-text-recent-listings" class="btn btn-lg btn-secondary mr-1 pt-1">Most Recent</h5>
+                        <h5 id="filter-text-likes"class="btn btn-lg btn-secondary pt-1 mr-1"> Most Likes</h5>
                     </div>
                 </div>
                 <div class="posts-segment mx-auto" id="posts-area">
                     <ul class="list-group shadow">
-                      {% set order = request.args.order|default(True) %}
                       {% set sort_on = request.args.sort_on|default('Date_Posted') %}
                         {% for each_listing in listings|sort(attribute=sort_on, reverse= True) %}
                             <li class="list-group-item">
@@ -139,7 +145,7 @@
                 </div>
 
            </div>
-           <div class="col-md-3 p-0">
+           <div class="col-md-3 p-0" id="side-area-items">
                 <div class="community-area">
                     <ul class="list-group shadow">
                         <!-- list group item-->

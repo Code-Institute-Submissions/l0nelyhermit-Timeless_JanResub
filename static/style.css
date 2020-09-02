@@ -291,22 +291,6 @@ body{
     margin: 0;
   }
   
-  @media(max-width: 768px) {
-    #sidebar {
-      margin-left: -16rem;
-    }
-    #sidebar.active {
-      margin-left: 0;
-    }
-    #content {
-      width: 100%;
-      margin: 0;
-    }
-    #content.active {
-      margin-left: 16rem;
-      width: calc(100% - 16rem);
-    }
-}
 
 #jumbotron-background{
     background-image:url(../static/images/watch_background.jpg);
@@ -350,6 +334,12 @@ body{
 
 
 #navigation-post-area{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#navigation-listing-area{
     display:flex;
     flex-direction: row;
     justify-content: space-between;
@@ -406,7 +396,7 @@ body{
 
 .watch-details{
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
 }
 
 .image-area{
@@ -503,4 +493,103 @@ body{
     border-radius: 20px;
     color:white !important;
     background-color: grey !important ;
+}
+
+
+/* Media Query */
+@media(max-width: 768px) {
+    #sidebar {
+      margin-left: -16rem;
+    }
+    #sidebar.active {
+      margin-left: 0;
+    }
+    #content {
+      width: 100%;
+      margin: 0;
+    }
+    #content.active {
+      margin-left: 16rem;
+      width: calc(100% - 16rem);
+    }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px){
+
+    #hero-container{
+        margin-left: 30px !important;
+    }
+    #hero h1{
+        font-size: 3em;
+        padding-right:50px;
+    }
+
+    #hero h2{
+        font-size: 24px;
+        padding-right: 50px;
+    }
+
+    #register-button{
+        padding:10px 35px 10px 27px;
+        margin-right: 60px !important;
+        width: 140px;
+    }
+
+    #page2-btn{
+        width: 120px;
+        padding: 10px 35px 10px 30px;
+        margin-left: 0px;
+        margin-right: 0px !important;
+    }
+
+    #browse-guest-btn{
+        width: 75%;
+        margin-right: 50px;
+    }
+
+    .title-hero-text{
+        font-size: 3em;
+        margin-top: 50px;
+    }
+
+    #side-area-items{
+        display: none;
+    }
+
+    #navigation-post-area{
+        padding-left:0px !important;
+    }
+
+    #navigation-listing-area{
+        padding-left:15px !important;
+    }
+
+    .image-area{
+        flex-direction: row-reverse;
+    }
+
+    #profile-icon-image{
+        height:20vh;
+        width: 50%;
+    }
+
+    #profile-image-area{
+        padding:0 !important;
+    }
+
+    #list-details{
+        font-size:16px;
+    }
+
+    .bio-content{
+        font-size: 15px;
+    }
+
+    #filter-text-recent{
+        margin-left:20px;
+    }
+
+    .card-show-post .card-body{
+        padding: 1rem;
+    }
 }
