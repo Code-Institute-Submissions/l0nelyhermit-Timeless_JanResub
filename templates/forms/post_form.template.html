@@ -8,6 +8,15 @@
     {%endif%}
 </div>
 <div class="form-group">
+    <label class="control-label" id="form-labels"> Watch Model</label>
+    <input type="text" name="watch" class="form-control {% if 'invalid_watch' in errors %} is-invalid {% endif %}" value="{{previous_values.Watch}}">
+    {% if 'invalid_watch' in errors %}
+    <div class="invalid-feedback">
+        {{errors.invalid_watch}}
+    </div>
+    {%endif%}
+</div>
+<div class="form-group">
     <label class="control-label" id="form-labels">Content</label>
     <textarea name="editordata" id="summernote" class="form-control {% if 'invalid_content' in errors  %} is-invalid {% endif %}" >{{previous_values.Content}}</textarea>
     {% if 'invalid_content' in errors  %}

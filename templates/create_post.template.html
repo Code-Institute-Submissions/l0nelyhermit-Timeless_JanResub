@@ -16,7 +16,16 @@
                                     <input type="text" name="title" class="form-control {% if 'invalid_title' in errors %} is-invalid {% endif %}">
                                     {% if 'invalid_title' in errors %}
                                     <div class="invalid-feedback">
-                                        {{errors.invalid_tile}}
+                                        {{errors.invalid_title}}
+                                    </div>
+                                    {%endif%}
+                                </div>
+                                <div>
+                                    <label> Watch Model</label>
+                                    <input type="text" name="watch" class="form-control {% if 'invalid_watch' in errors %} is-invalid {% endif %}">
+                                    {% if 'invalid_watch' in errors %}
+                                    <div class="invalid-feedback">
+                                        {{errors.invalid_watch}}
                                     </div>
                                     {%endif%}
                                 </div>
