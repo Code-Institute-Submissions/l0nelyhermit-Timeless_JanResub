@@ -466,6 +466,7 @@ def create_post():
     else: 
         # Retrieve the information from the fields of the form
         title = request.form.get('title')
+        watch = request.form.get('watch')
         content = request.form.get('editordata')
 
         # Validate the form inputs
@@ -498,6 +499,7 @@ def create_post():
                 'PostID':postID,
                 'Title':title,
                 'Content':content_soup.get_text(),
+                'Watch': watch,
                 'Votes': votes,
                 'Comments': comments,
                 'Date_Posted':dateposted,
@@ -610,6 +612,7 @@ def edit_user_posts(post_id):
     else:
         # Retrieving the information from the form
         title = request.form.get('title')
+        watch = request.form.get('watch')
         content = request.form.get('editordata')
         content_soup = BeautifulSoup(content,"html.parser")
 
@@ -640,6 +643,7 @@ def edit_user_posts(post_id):
                 {
                     '$set': {
                         'Title': title,
+                        'Watch':watch,
                         'Content': content_soup.get_text()
                             }
                         }
