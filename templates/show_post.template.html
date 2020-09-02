@@ -1,7 +1,6 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
 <div id="show-post-area">
     <div class="container-fluid">
         <div class="row">
@@ -79,7 +78,5 @@
         </div>
     </div>
 </div>
-
-{% endif %}
 {% endblock %}
 
