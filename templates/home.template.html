@@ -68,7 +68,11 @@
     <div class="page-content" id="content">
         <nav class="navbar navbar-expand-lg navbar-light  bg-light shadow-sm" id="main-navbar">
             <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 d-inline-block align-top">
-                <i class="fa fa-user mr-3"></i><small class="text-uppercase font-weight-bold">{{current_user.username}}</small></button>
+                <i class="fa fa-user mr-3"></i><small class="text-uppercase font-weight-bold">{{current_user.username}}
+                  {%if not current_user.is_authenticated%}
+                    Annoymous
+                  {%endif%}
+                </small></button>
                 
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>

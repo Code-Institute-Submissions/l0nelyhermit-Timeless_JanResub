@@ -16,6 +16,8 @@
                         
                                     {% include 'forms/register_form.template.html' %}
                                     <input type="submit" value="REGISTER" class="btn btn-lg btn-danger btn-block">
+                                    <div class="text-center">
+                                        <a class="small" href="{{url_for('login_user')}}" style="color:inherit;">Already have an account? Login</a></div>
                                 {% endwith %}
                             </form>
                         </div>

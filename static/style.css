@@ -535,6 +535,7 @@ body{
     }
 }
 
+/* Media Query for mobile sized phones display */
 @media only screen and (min-device-width: 320px) and (max-device-width: 480px){
 
     #hero-container{
@@ -614,3 +615,5 @@ body{
         padding: 1rem;
     }
 }
+
+/* Media Query for Tablet Display */
