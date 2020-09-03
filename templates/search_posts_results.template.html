@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <h5 class="card-title text-center mb-4">SEARCH RESULTS</h5>
                         {% for each_post in posts %}
-                        <div class="card mb-4">
+                        <div class="card mb-4" onclick="window.location.href='{{ url_for('show_post',post_id = each_post._id)}}'">
                             <div class="card-body p-5">
                               <h4 class="mb-2">{{each_post.Title}}</h4>
                               <h5 class="mb-4">Time of Post: {{each_post.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h5>

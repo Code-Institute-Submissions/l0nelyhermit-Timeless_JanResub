@@ -1019,7 +1019,7 @@ def search():
                 }
             if required_model:
                 criteria['Model']={
-                    '$regex':required_brand,
+                    '$regex':required_model,
                     '$options':'i'
                 }
             if required_user_listing:
