@@ -617,3 +617,93 @@ body{
 }
 
 /* Media Query for Tablet Display */
+@media only screen and (min-width:768px) and (max-width:1439px){
+    #hero-container{
+        margin-left: 30px !important;
+    }
+    #hero h1{
+        font-size: 6em;
+        padding-right:50px;
+    }
+
+    #hero h2{
+        font-size: 50px;
+        padding-right: 50px;
+    }
+
+    #register-button{
+        padding:10px 35px 10px 35px;
+        margin-right: 60px !important;
+        width: 180px;
+    }
+
+    #page2-btn{
+        width: 180px;
+        padding: 10px 35px 10px 35px;
+        margin-left: 0px;
+        margin-right: 0px !important;
+    }
+
+    #image-login{
+        display:none !important;
+    }
+    #login-form-area{
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    #browse-guest-btn{
+        width: 60%;
+        margin-right: 50px;
+    }
+
+    .title-hero-text{
+        font-size: 6em;
+        margin-top: 100px;
+    }
+
+    #post-listing-area{
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+    #side-area-items{
+        display: none;
+    }
+
+    #navigation-post-area{
+        padding-left:0px !important;
+    }
+
+    #navigation-listing-area{
+        padding-left:15px !important;
+    }
+
+    .image-area{
+        flex-direction: row-reverse;
+    }
+
+    #profile-icon-image{
+        height:20vh;
+        width: 50%;
+    }
+
+    #profile-image-area{
+        padding:0 !important;
+    }
+
+    #list-details{
+        font-size:16px;
+    }
+
+    .bio-content{
+        font-size: 15px;
+    }
+
+    #filter-text-recent{
+        margin-left:20px;
+    }
+
+    .card-show-post .card-body{
+        padding: 1rem;
+    }
+}
