@@ -158,6 +158,7 @@ body{
     width:100%;
 }
 
+#global-search-area,
 #show-listing-area,
 #show-post-area,
 #edit-listing-area,
@@ -177,6 +178,7 @@ body{
     height:350vh;
 }
 
+.card-global-search,
 .card-show-listing,
 .card-edit-comment,
 .card-show-post,
@@ -193,6 +195,7 @@ body{
     box-shadow: 0 0.5rem 1rem 0 rgba(0,0,0,0.1);
 }
 
+.card-global-search .card-title,
 .card-show-listing .card-title
 .card-edit-comment .card-title,
 .card-show-post .card-title,
@@ -212,6 +215,7 @@ body{
     font-weight: bold;
 }
 
+.card-global-serach .card-body,
 .card-show-listing .card-body,
 .card-edit-comment .card-body,
 .card-show-post .card-body,
@@ -227,6 +231,8 @@ body{
     padding:2rem;
 }
 
+#post-search,
+#listing-search,
 .edit-comment-form,
 .edit-listing.form,
 .edit-post-form,
@@ -255,7 +261,6 @@ body{
     font-family: 'Ubuntu',sans-serif;
     font-weight: bold;
 }
-
 
 
 #sidebar-nav-text{
@@ -413,6 +418,7 @@ body{
     color:inherit;
 }
 
+.pagination-search,
 .pagination-comments,
 .pagination-listings,
 .pagination-posts{
@@ -495,7 +501,22 @@ body{
     background-color: grey !important ;
 }
 
+#submit-btn,
+#post-search,
+#listing-search{
+    display:none;
+}
 
+#choose-search{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.radio-btn-area{
+    display:flex;
+    justify-content: center;
+}
 /* Media Query */
 @media(max-width: 768px) {
     #sidebar {
@@ -549,7 +570,7 @@ body{
 
     .title-hero-text{
         font-size: 3em;
-        margin-top: 50px;
+        margin-top: 100px;
     }
 
     #side-area-items{

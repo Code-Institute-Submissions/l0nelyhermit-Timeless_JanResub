@@ -1,0 +1,31 @@
+
+<div class="pagination-search">
+    <div class="col-sm-4 mr-2 ">
+        {% if page_number_listings <= number_of_pages_listings %}
+        <button class="btn btn-block btn-sm btn-danger mr-1"
+        onclick="window.location.href='{{url_for('search',page_number_listings=page_number_listings+1,title_listing=required_listing_title,brand=required_brand,model=required_model,user_listing=required_user_listing)}}'">Next Page</button>
+        {% endif %}
+        {% if page_number_posts <= number_of_pages_posts %}
+        <button class="btn btn-block btn-sm btn-danger mr-1"
+        onclick="window.location.href='{{url_for('search',page_number_posts=page_number_posts+1,title_post=required_post_title,watch=required_watch,user_post=required_user_post)}}'">Next Page</button>
+        {% endif %}
+    </div>
+    <div class="col-sm-4 mr-2" id="page-number-layout">
+        {% for page_no_listings in range(number_of_pages_listings+1) %}
+        <a href="{{url_for('search',page_number_listings=page_no_listings,title_listing=required_listing_title,brand=required_brand,model=required_model,user_listing=required_user_listing)}}" class="mr-2"  id="total-pages">{{page_no+1}}</a>
+        {% endfor %}
+        {% for page_no_posts in range(number_of_pages_posts+1) %}
+        <a href="{{url_for('search',page_number_posts=page_no_posts,title_post=required_post_title,watch=required_watch,user_post=required_user_post)}}" class="mr-2"  id="total-pages">{{page_no+1}}</a>
+        {% endfor %}
+    </div>
+    <div class="col-sm-4 ">
+        {% if page_number_listings > 0 %}
+        <button class="btn btn-block btn-sm btn-danger mr-1"
+        onclick="window.location.href='{{url_for('search',page_number_listings=page_number_listings-1,title_listing=required_listing_title,brand=required_brand,model=required_model,user_listing=required_user_listing)}}'">Previous Page</button>
+        {% endif %}
+        {% if page_number_posts > 0 %}
+        <button class="btn btn-block btn-sm btn-danger mr-1"
+        onclick="window.location.href='{{url_for('search',page_number_posts=page_number_posts-1,title_post=required_post_title,watch=required_watch,user_post=required_user_post)}}'">Previous Page</button>
+        {% endif %}
+    </div>
+</div>

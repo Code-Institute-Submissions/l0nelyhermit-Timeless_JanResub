@@ -63,6 +63,20 @@ $('#page2-btn').click(function(){
     $(`#page-${pageNumber}`).removeClass('hidden');
 })
 
+$('#page3-btn').click(function(){
+    let pageNumber = $(this).data('page');
+    hideAllPages();
+    $(`#page-${pageNumber}`).addClass('show');
+    $(`#page-${pageNumber}`).removeClass('hidden');
+})
+
+$('#page4-btn').click(function(){
+    let pageNumber = $(this).data('page');
+    hideAllPages();
+    $(`#page-${pageNumber}`).addClass('show');
+    $(`#page-${pageNumber}`).removeClass('hidden');
+})
+
 // Main Forum Filters
 $('#filter-text-recent').click(function(event){
     event.preventDefault();
@@ -83,6 +97,8 @@ $('#filter-text-likes').click(function(event){
     event.preventDefault();
     window.location='/marketplace?sort_on=Likes'
 })
+
+// Functionality for the two radio buttons on the forms
 
 
 
@@ -115,6 +131,19 @@ $(function(){
         $('#sidebar,#content').toggleClass('active')
     })
 
+
+
      
+    $('#listing-radio').on("change",function(){
+        $('#listing-search').show();
+        $('#post-search').hide();
+        $('#submit-btn').show();
+    })
+
+    $('#post-radio').on("change",function(){
+        $('#listing-search').hide();
+        $('#post-search').show();
+        $('#submit-btn').show();
+    })
 
 })

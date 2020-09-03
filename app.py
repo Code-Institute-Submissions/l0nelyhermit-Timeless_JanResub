@@ -273,135 +273,7 @@ def home():
     return render_template('home.template.html',posts=posts)
 
 
-# Editing User Account Information
-@app.route('/edit/account/',methods=['GET','POST'])
-@flask_login.login_required
-def edit_user_account():
-    # Retrieves the edit account page for the user to edit account particulars
-    if request.method =="GET":
-        current_user_logged_in = db.Users.find_one({
-            'Email':flask_login.current_user.get_id()
-        })
-        return render_template('update_account.template.html',current_user_logged_in=current_user_logged_in,questions=all_security_questions)
-    else:
-        # Retrieve the updated fields information
-        fname = request.form.get('name')
-        email = request.form.get('email')
-        dob = request.form.get('dob')
-        country = request.form.get('country')
-        username = request.form.get('username')
-        password = request.form.get('password')
-        securityquestion = request.form.get('SecurityQuestion')
-        securityanswer = request.form.get('SecurityAnswer')
-    
 
-        # Form Field Validation
-        # Error Accumulator Collector
-        errors = {}
-        
-        database_error = False
-        # Check if Full Name entered is valid
-        if len(fname) <3 or len(fname)>70:
-            flash('Error: Invalid Name', 'danger')
-            errors.update(invalid_name="Please key in a valid name")
-        
-        # Database Validation
-        elif database_error == False:
-            # Check if the User already exists in the database
-            username_check = db.Users.find_one({
-            'Username': username
-            })
-            # Check if user entered an email that exists in database
-            email_check = db.Users.find_one({
-                'Email': email
-            })
-            # SCENARIOS:
-            # Check against database for existing information that is the same with other users
-            # 1. User wishes to keep email, change username
-            # 2. User wishes to keep username , change email
-            if not username_check:
-                if email_check:
-                    # If user enters same email as another existing user, raise error
-                    if email == email_check['Email']:
-                        flash('Error: Email has already been used, please try again with another valid email','danger')
-                        errors.update(invalid_email="Email has already been used, please enter a valid email")
-                        database_error = True
-                else:
-                    # Check if errors occurred, if there are errors, display failure message
-                    if len(errors) > 0:
-                        flash("Update Failure",'danger')
-                        return redirect(url_for('edit_user_account'))
-                    else:
-
-                        db.Profiles.update({
-                            'Email': flask_login.current_user.get_id()
-                        }, {
-                            '$set': {
-                                'Full_Name': fname,
-                                'Email': email,
-                                'Date_Of_Birth': datetime.datetime.strptime(dob, "%Y-%m-%d"),
-                                'Country': country,
-                                'Username': username,
-                            }
-                        })
-
-                        db.Users.update({
-                            'Email': flask_login.current_user.get_id()
-                        }, {
-                            '$set': {
-                                    'Full_Name': fname,
-                                    'Email': email,
-                                    'Date_Of_Birth': datetime.datetime.strptime(dob, "%Y-%m-%d"),
-                                    'Country': country,
-                                    'Username': username,
-                                    'Password': pbkdf2_sha256.hash(password),
-                                    'SecurityQuestion': securityquestion,
-                                    'SecurityAnswer': securityanswer
-                            }
-                        })
-
-                        flash("Your Account has been updated successfully,Please Login Again","success")
-
-                        return redirect(url_for('welcome_user'))
-            else:
-                 #  If user enters username that matches another existing username, raise error
-                if username == username_check['Username']:
-                    flash('Error: account already exists, please try again with another valid username','danger')
-                    errors.update(invalid_username="Account already exists,please proceed to login")
-                    database_error = True
-                    # if user enters username and email that matches another existing username and email, raise error
-                    if email_check:
-                        if email_check['Email'] ==email and username_check['Username']==username:
-                            flash('Error: Email and Username have been used already,please enter something different','danger')
-                            errors.update(invalid_email_and_username="Email and Username have been used, please try something different")
-                            database_error = True
-
-            if len(errors) > 0:
-                        flash("Update Failure",'danger')
-                        return redirect(url_for('edit_user_account'))
-
-
-
-# Delete Account from Database
-@app.route('/delete/account/',methods=['GET','POST'])
-@flask_login.login_required
-def delete_user_account():
-    # Retrieve the information of the user from the database
-    if request.method =="GET":
-        current_user = db.Users.find_one({
-            'Email':flask_login.current_user.get_id()
-        })
-        return render_template('delete_account.template.html',current_user=current_user)
-    else:
-        # Remove both profile and account from the database
-        db.Profiles.remove({
-            'Email':flask_login.current_user.get_id()
-        })
-        db.Users.remove({
-            'Email':flask_login.current_user.get_id()
-        })
-        flash("Your Account has been deleted successfully","success")
-        return redirect(url_for('welcome_user'))
 
 # Go To Profile Page of the User
 @app.route('/profile',methods=['GET'])
@@ -774,17 +646,7 @@ def delete_comment(comment_id):
         return redirect(url_for('show_post',post_id=post_id))
     
 
-        
-
-
-
-
-
-# Search Engine implementation for Posts
-
-# Filter Search For Posts
-
-
+    
 
 
 
@@ -846,8 +708,6 @@ def search_post_home():
         return render_template('home.template.html',posts=all_posts)
         
 
-
-# <----------------------------------------------------Listings----------------------------------------------------------------------->
 
 @app.route('/marketplace')
 def marketplace():
@@ -1076,7 +936,6 @@ def show_user_listings():
 
 
 @app.route('/listing/<listing_id>',methods=['GET','POST'])
-@flask_login.login_required
 def show_listing(listing_id):
     listing = db.Listings.find_one({
             '_id':ObjectId(listing_id)
@@ -1107,9 +966,120 @@ def search_listings_marketplace():
         all_listings = db.Listings.find(criteria)
         return render_template('marketplace.template.html',listings=all_listings)
 
-@app.route('/search',methods=['GET','POSt'])
+
+
+brands_list_search=[
+    'Rolex',
+    'Casio',
+    'Apple',
+    'Seiko',
+    'Timex',
+    'Tudor',
+    'Omega',
+    'Audemars Piguet',
+    'Panerai',
+    'Tag Hauer',
+    'Breitling',
+    'Cartier',
+    'Iwc',
+    'Hublot',
+    'Shinola',
+    'Other Brands'
+]
+
+@app.route('/search',methods=['GET','POST'])
 def search():
-    pass
+    if request.method=='GET':
+        return render_template('global_search.template.html',brands=brands_list_search)
+    else:
+        # Check if the User has selected either listing search for post search
+        user_choice_search = request.form['choice-option']
+        print(user_choice_search)
+
+        # Criteria Accumulator for the query
+        criteria={}
+        if user_choice_search =='listing':
+            # Get the required fields from the listing form
+            required_listing_title = request.form.get('title_listing') or ''
+            required_brand = request.form.get('brand') or ''
+            required_model = request.form.get('model') or ''
+            required_user_listing = request.form.get('user_listing') or ''
+
+            # Create the query based on the listing form
+
+            if required_listing_title:
+                criteria['Title'] ={
+                    '$regex':required_listing_title,
+                    '$options': 'i'
+                }
+            if required_brand:
+                criteria['Brand']={
+                    '$regex':required_brand,
+                    '$options':'i'
+                }
+            if required_model:
+                criteria['Model']={
+                    '$regex':required_brand,
+                    '$options':'i'
+                }
+            if required_user_listing:
+                criteria['Username']={
+                    '$regex':required_user_listing,
+                    '$options':'i'
+                }
+            # Getting the results of the data
+            number_of_results = db.Listings.find(criteria).count()
+            page_size= 3
+            number_of_pages = math.ceil(number_of_results/page_size)-1
+            # Getting the current page number. If it does not exist set it to zero
+            page_number = request.args.get('page_number') or '0'
+            page_number = int(page_number)
+            # Calculate the number of results to skip depending on the page number
+            number_to_skip= page_number * page_size
+
+            all_listings= db.Listings.find(criteria).skip(number_to_skip).limit(page_size)
+            # Pass the data to the template
+            return render_template('search_listings_results.template.html',listings=all_listings,
+                                    page_number=page_number,
+                                    number_of_pages=number_of_pages)
+        else:
+            # Get the required fields from the Post Form
+            required_post_title = request.form.get('title_post') or ''
+            required_watch = request.form.get('watch') or ''
+            required_user_post = request.form.get('user_post') or ''
+            
+            if required_post_title:
+                criteria['Title'] = {
+                    '$regex':required_post_title,
+                    '$options': 'i'
+                }
+            if required_watch:
+                criteria['Watch']={
+                    '$regex':required_watch,
+                    '$options': 'i'
+                }
+            if required_user_post:
+                criteria['Username']={
+                    '$regex':required_user_post,
+                    '$options': 'i'
+                }
+
+            # Getting the results of the data
+            number_of_results = db.Posts.find(criteria).count()
+            page_size= 3
+            number_of_pages = math.ceil(number_of_results/page_size)-1
+            # Get the current page number. If it does not exist, set to zero 
+            page_number = request.args.get('page_number') or '0'
+            page_number = int(page_number)
+            # calculate how many results to skip depending on the page number
+            number_to_skip= page_number * page_size
+
+            all_posts= db.Posts.find(criteria).skip(number_to_skip).limit(page_size)
+            # pass the data based on the template
+            return render_template('search_posts_results.template.html',posts=all_posts,
+                                    page_number=page_number,
+                                    number_of_pages=number_of_pages)
+                                   
 
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),

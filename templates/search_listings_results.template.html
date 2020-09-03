@@ -1,0 +1,70 @@
+{% extends 'base.template.html' %}
+
+{% block content %}
+<div id="global-search-area">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                <div class="card card-global-search my-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-center mb-4">SEARCH RESULTS</h5>
+                        {% for each_listing in listings %}
+                        <div class="listing-search">
+                            <h5 class="mt-0 font-weight-bold mb-2">{{each_listing.Title}}</h5>
+                        <div class="watch-details">
+                            <h6 class="mt-0 font-weight-bold mr-2">Brand: {{each_listing.Brand}}</h6>
+                            <h6 class="mt-0 font-weight-bold ">Model: {{each_listing.Model}}</h6>
+                        </div>
+                        <div class="media align-items-lg-center flex-column flex-lg-row p-3">
+                            <div class="image-area mr-3 align-items-center">
+                                <img src="{{each_listing.Image_URL}}" width="200"
+                                    class="ml-lg-3 order-1 order-lg-2 mb-2">
+                            </div>
+                            <div class="media-body order-2 order-lg-1 d-flex flex-column"
+                                onclick="window.location.href='{{ url_for('show_listing',listing_id = each_listing._id)}}'">
+                                <p class="font-bold text-muted mb-0 small">
+                                    {{each_listing.Description|truncate(length=255,end="...")}}</p>
+                                <div class="d-flex align-items-center justify-content-between mt-1">
+                                    <div class="more-listing-details">
+                                        <h6 class="font-weight-bold my-2">Posted by:
+                                            {{each_listing.Username}}</h6>
+                                        <h6 class="font-weight-bold my-2">Price: ${{each_listing.Price}}
+                                        </h6>
+                                        <h6 class="font-weight-bold my-2">Time Posted:
+                                            {{each_listing.Date_Posted.strftime('%Y-%m-%d %a %H:%M')}}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="pagination-listings mb-4 mt-2 ml-3">
+                            <div class="col-sm-4 mr-2 ">
+                                {% if page_number <= number_of_pages %}
+                                <button class="btn btn-block btn-sm btn-danger mr-1"
+                                    onclick="window.location.href='{{url_for('show_user_listings',page_number=page_number+1)}}'">Next
+                                    Page</button>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-4 mr-2" id="page-number-layout">
+                                {% for page_no in range(number_of_pages+1) %}
+                                <a href="{{url_for('show_user_listings',page_number=page_no)}}" class="mr-2"
+                                    id="total-pages">{{page_no+1}}</a>
+                                {% endfor %}
+                            </div>
+                            <div class="col-sm-4 ">
+                                {% if page_number > 0 %}
+                                <button class="btn btn-block btn-sm btn-danger mr-1"
+                                    onclick="window.location.href='{{url_for('show_user_listings',page_number=page_number-1)}}'">Previous
+                                    Page</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
