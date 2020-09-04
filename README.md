@@ -53,7 +53,7 @@ Taking inspiration from a hub-and-spoke design, the website is designed in a way
 
 Sequence of Navigation
 1. Welcome Page
- Users will be able to choose to continue to browse as guests, register for an account or login to the website.
+- Users will be able to choose to continue to browse as guests, register for an account or login to the website.
 2. Homepage
 - At the homepage, all users including guests will have the ability to navigate through the website with anonymous users having restrictions imposed.
 - Anonymous Users would be restricted to access of global search, marketplace,homepage and the viewing of posts and listings.
@@ -120,6 +120,7 @@ Fonts used such as Roboto, Ubuntu, Georgia and Verdana are used to contribute to
 - Github
 - Git
 - gunicorn
+- Cloudinary
 
 ### Flask
 The web framework used in the development of the webpage that is reponsible for the key essential features such as routing, validation of forms and implementing key functions of the webpage. 
@@ -127,7 +128,7 @@ The web framework used in the development of the webpage that is reponsible for 
 ### Flask-Login
 Used to provide basic security and privacy features and to enable an account login system.
 
-### Viusal Design
+### Visual Design
 1. Toastr
 - Used to inform the user on the result of an action on the webpage such as submission of a form
 2. AOS Animation
@@ -140,6 +141,8 @@ Used to provide basic security and privacy features and to enable an account log
 - Takes in the input of the summernote and converts it to raw text.
 6. Google Fonts
 - To enhance the overall display of the webpage
+7. Cloudinary
+- To allow users to upload images for their listings
 
 ### Security
 1. passlib
@@ -159,7 +162,17 @@ Used to provide basic security and privacy features and to enable an account log
 
 
 ## Programming Methodology
+### Form Validation
+Upon submission of a form, there will be validation in place that is handled through condition checkers. An error accumulator which is a dictionary is used to store the errors and if the error accumulator has received errors, the user will be notified through a danger toastr message of a failed form submission.
+### Implementation of Likes/Upvotes/Downvotes
+Through the use of AJAX, the functionality of the like button, upvote button and downvote button is created such that when the user clicks on the button the page should not refresh and the vote count or the like count will be updated accordingly. Furthermore, the updated number will also be saved into the database accordingly.
 
+### Security Control
+- Through the use of .env file, important and sensitive data such as secret keys are carefully hidden away so that they are not leaked into the publc.
+- Passlib library is used to encrypt passwords when the password is saved into the database to prevent unauthorized personnel from retrieving the passwords easily upon access to the database
+
+### Source Control
+- Github is used to track and manage any changes in the development of the project
 
 ## Database Design
-
+### ER Diagram

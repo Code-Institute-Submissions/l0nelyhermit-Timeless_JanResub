@@ -754,7 +754,6 @@ def create_listing():
         description= request.form.get('editordata')
         price = request.form.get('price')
         country=request.form.get('country')
-        caption = request.form.get('caption')
         url_image= request.form.get('uploaded-file-url')
         asset_id=request.form.get('asset-id')
 
@@ -811,8 +810,7 @@ def create_listing():
                 'Date_Posted':dateposted,
                 'Username': flask_login.current_user.username,
                 'Image_URL': url_image,
-                'Asset_ID':asset_id,
-                'Caption':caption
+                'Asset_ID':asset_id
             }
 
             db.Listings.insert_one(new_listing)
