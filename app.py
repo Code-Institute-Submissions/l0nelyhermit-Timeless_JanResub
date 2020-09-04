@@ -446,7 +446,6 @@ def show_post(post_id):
         comment = request.form.get('editordata')
         comment_soup = BeautifulSoup(comment,"html.parser")
         time_of_post = datetime.datetime.now()
-        votes = int()
 
         # Validate the comment, check if the comment is empty
         if comment == "":
@@ -462,8 +461,7 @@ def show_post(post_id):
                         '_id': ObjectId(),
                         'Username': flask_login.current_user.username,
                         'Content': comment_soup.get_text(),
-                        'Date_Posted': time_of_post,
-                        'Votes': votes
+                        'Date_Posted': time_of_post
                     }
                 }
 
