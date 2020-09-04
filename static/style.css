@@ -4,7 +4,7 @@ body{
 }
 .page {
     height: 100vh;
-    box-sizing: border-box; /* padding and marign will be part of the element's width instead of being added on */
+    box-sizing: border-box; 
     will-change: transform;
     transition: transform 0.5s ease-in;
     position: absolute;
@@ -517,7 +517,7 @@ body{
     display:flex;
     justify-content: center;
 }
-/* Media Query */
+/* Media Query For Bootstrap*/
 @media(max-width: 768px) {
     #sidebar {
       margin-left: -16rem;
