@@ -16,10 +16,6 @@
                               <div class="post-content p-2 mb-2">
                                 <p class="font-italic">{{each_post.Content|truncate(length=255,end="...")}}</p>
                               </div>
-                              <div class="user-options">
-                                <button class="btn btn-sm btn-danger mr-2 text-uppercase" onclick="window.location.href='{{url_for('edit_user_posts',post_id=each_post._id)}}'">Edit Post</button>
-                                <button class="btn btn-sm btn-danger text-uppercase" onclick="window.location.href='{{url_for('delete_user_posts',post_id=each_post._id)}}'">Delete Post</button>
-                              </div>
                             </div>
                           </div>
                         {% endfor %}

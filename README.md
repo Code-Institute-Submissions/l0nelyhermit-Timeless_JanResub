@@ -65,7 +65,7 @@ Sequence of Navigation
 - Only Registered Users will have the ability to create comments,edit and delete their own comments
 
 ### Skeleton
-
+Wireframes used for the project can be found [here](readme/project_3.pdf)
 ### Surface
 Images used in the project were related to watches or community to promote a healthy and warm community of users interested in watches.
 
@@ -87,12 +87,14 @@ Fonts used such as Roboto, Ubuntu, Georgia and Verdana are used to contribute to
 - User Menu Navigation for users to navigate to different parts of the website at homepage or marketplace
 
 ### Features Left To Implement
-- Allow Users to Chat to Buy with other users in real time
+- Allow Users to Chat to Buy with other users in real time, therefore, the button chat to buy is disabled.
 - Setting up reviews section for users to be able to deal with more confidence in the marketplace
 - Better Pagination System in placed ssuch as infinite scrolling features for posts and listings
 - Additional Sorting Features for listings such as sorting by price
 - Allow Users to share the posts or listings to social media platforms
 - Allow posts,comments and listings created by summernote to actually display the correct formatting without disrupting the overall page layout.
+- Allow users to upvote once or downvote once only. If the upvote button is clicked, the button should be disabled and the downvote button should only be allowed to click to change the vote count. Likewise for the downvote button, if the downvote button is clicked, the button should be disabled and the upvote button should only be allowed to click to change the vote count.
+- Allow users to only like once or remove the like
 
 ## Technologies Used
 - HTML 
@@ -186,19 +188,19 @@ In general, embedded data was used to establish the one-to-many relationships su
 ### Sample Documents of MongoDB
 <div align="center">
 <h4>Posts</h4>
-![postDatabase](readme/post_database.jpg)
+<img src="readme/post_database.jpg" alt="database_post">
 </div>
 <div align="center">
 <h4>Listing</h4>
-![listingDatabase](readme/listing_database.jpg)
+<img src="readme/listing_database.jpg" alt="database_listing">
 </div>
 <div align="center">
 <h4>Profile</h4>
-![profileDatabase](readme/profile_database.jpg)
+<img src="readme/profile_database.jpg" alt="database_profile">
 </div>
 <div align="center">
 <h4>User</h4>
-![userDatabase](readme/user_database.jpg)
+<img src="readme/user_database.jpg" alt="database_user">
 </div>
 
 ## Testing
@@ -263,7 +265,6 @@ pages when tested through these different platforms.
 - Downvote button of posts will cause the page to reload 
 - If users upload many images into the create listing or edit listing form, only the latest image will be taken into the database.
 
-
 ## Deployment
 This website is deployed on [Heroku](https://www.heroku.com). 
 
@@ -282,6 +283,17 @@ pip3 freeze --local > requirements.txt
     - Secret Key: Choose Your Own Secret Key
     - Upload Preset: Your Own Upload Preset
     - Cloud Name: Your Own Cloud Name 
+
+## Credits and Acknowledgement
+Bootstrap Snippets : https://bootstrapious.com/snippets
+Background Image For Homepage and Marketplace: https://wallpapercave.com/louis-moinet-watches-wallpapers
+Hero Image For Welcome Users:https://www.pexels.com/photo/close-up-photo-of-wristwatch-2113994/
+Image Used for Login Page:https://www.pexels.com/photo/men-s-white-button-up-dress-shirt-708440/
+Background Image Used for the rest of the webpage: https://www.pexels.com/photo/round-michael-kors-chronograph-watch-2783873/
+Favicon Image: https://favicon.io/emoji-favicons/watch/
+
+### Acknowledgements
+- Website was inspired by mainly by reddit
 
 
 
