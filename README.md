@@ -285,12 +285,12 @@ pip3 freeze --local > requirements.txt
     - Cloud Name: Your Own Cloud Name 
 
 ## Credits and Acknowledgement
-Bootstrap Snippets : https://bootstrapious.com/snippets
-Background Image For Homepage and Marketplace: https://wallpapercave.com/louis-moinet-watches-wallpapers
-Hero Image For Welcome Users:https://www.pexels.com/photo/close-up-photo-of-wristwatch-2113994/
-Image Used for Login Page:https://www.pexels.com/photo/men-s-white-button-up-dress-shirt-708440/
-Background Image Used for the rest of the webpage: https://www.pexels.com/photo/round-michael-kors-chronograph-watch-2783873/
-Favicon Image: https://favicon.io/emoji-favicons/watch/
+- Bootstrap Snippets : https://bootstrapious.com/snippets
+- Background Image For Homepage and Marketplace: https://wallpapercave.com/louis-moinet-watches-wallpapers
+- Hero Image For Welcome Users:https://www.pexels.com/photo/close-up-photo-of-wristwatch-2113994/
+- Image Used for Login Page:https://www.pexels.com/photo/men-s-white-button-up-dress-shirt-708440/
+- Background Image Used for the rest of the webpage: https://www.pexels.com/photo/round-michael-kors-chronograph-watch-2783873/
+- Favicon Image: https://favicon.io/emoji-favicons/watch/
 
 ### Acknowledgements
 - Website was inspired by mainly by reddit
