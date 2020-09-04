@@ -31,18 +31,18 @@ Create a dynamic forum that would allow different types of users to be have the 
 
 ### Scope
 #### Required Functionalities
-1. CREATE/READ/UPDATE/DELETE (CRUD) Functionality
+1. **CREATE/READ/UPDATE/DELETE (CRUD) Functionality**
 - Listings: Users must be able to read listings, edit their own listings,delete their own listings and create a listing.
 - Posts: Users must be abe to read posts, edit their own posts, delete their own posts and create a post.
 - Profile: Users must be able to see their profile information and edit their own profile information
-2. Backend Storage
+2. **Backend Storage**
 - Listings data, Posts data, User Account Data and Profile Data will all be stored using a backend database
-3. User Interaction
+3. **User Interaction**
 - Users able to upvote and downvote a post.
 - Users will be able to like a listing. 
 - Users will be able to search for their post or listing 
 - Users will be able to filter the posts and listings based on their desired requirements
-4. Presentation and Responsiveness
+4. **Presentation and Responsiveness**
 - Users should be able to view the web application through different platform devices
 - Posts and listings should be displayed in a clear and neat manner throughout the webpage.
 
@@ -52,16 +52,16 @@ Create a dynamic forum that would allow different types of users to be have the 
 Taking inspiration from a hub-and-spoke design, the website is designed in a way that would allow all users to be able to navigate through the site easily as well as for clear organisation of website content.
 
 Sequence of Navigation
-1. Welcome Page
+1. **Welcome Page**
 - Users will be able to choose to continue to browse as guests, register for an account or login to the website.
-2. Homepage
+2. **Homepage**
 - At the homepage, all users including guests will have the ability to navigate through the website with anonymous users having restrictions imposed.
 - Anonymous Users would be restricted to access of global search, marketplace,homepage and the viewing of posts and listings.
 - Registered Users would be able to freely navigate through the website with access to all features and be able to create,edit,delete and update posts and listings on the website.
-3. Listings and Posts
+3. **Listings and Posts**
 - All users including anonymous users will be able to view posts and listings
 - Registered Users have the ability to create,edit and delete their own posts and listings
-4. Comments
+4. **Comments**
 - Only Registered Users will have the ability to create comments,edit and delete their own comments
 
 ### Skeleton
@@ -176,3 +176,19 @@ Through the use of AJAX, the functionality of the like button, upvote button and
 
 ## Database Design
 ### ER Diagram
+![ERDiagram](readme/ER-Diagram-Timeless.png)
+
+### Data Model Design For MongoDB
+For this project, a hybrid approach was taken and a mixture of embedded data was used together with referencing to allow for the relationships to be established.
+
+In general, embedded data was used to establish the one-to-many relationships such as the posts and comments, while referencing was used as well for profile and account.
+
+### Sample Documents of MongoDB
+1. **Posts**
+![postDatabase](readme/post_database.jpg)
+2. **Listing**
+![listingDatabase](readme/listing_database.jpg)
+3.**Profile**
+![profileDatabase](readme/profile_database.jpg)
+4.**User**
+![userDatabase](readme/user_database.jpg)
