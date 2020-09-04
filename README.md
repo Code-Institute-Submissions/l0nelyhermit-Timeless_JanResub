@@ -188,7 +188,8 @@ In general, embedded data was used to establish the one-to-many relationships su
 ![postDatabase](readme/post_database.jpg)
 2. **Listing**
 ![listingDatabase](readme/listing_database.jpg)
-3.**Profile**
+3. **Profile**
 ![profileDatabase](readme/profile_database.jpg)
-4.**User**
+4. **User**
 ![userDatabase](readme/user_database.jpg)
+
