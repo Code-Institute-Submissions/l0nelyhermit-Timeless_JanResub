@@ -158,7 +158,6 @@ body{
     width:100%;
 }
 
-#global-search-area,
 #show-listing-area,
 #show-post-area,
 #edit-listing-area,
@@ -169,13 +168,28 @@ body{
 #edit-comment-area,
 #edit-post-area,
 #update-profile-area,
-#post-area,
+#post-area{
+    background-color:white;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:200vh;
+}
+
+
 #register-area{
     background-image: url(../static/images/forms-background.jpg);
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
-    height:350vh;
+    height:100vh;
+}
+#global-search-area{
+    background-color:white;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height:100vh;
 }
 
 .card-global-search,

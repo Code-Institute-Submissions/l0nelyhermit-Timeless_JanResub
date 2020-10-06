@@ -121,10 +121,6 @@
                                 <div class="media align-items-lg-center flex-column flex-lg-row p-3" >
                                     <div class="image-area mr-3 align-items-center" >
                                         <img src="{{each_listing.Image_URL}}"  width="200" class="ml-lg-3 order-1 order-lg-2 mb-2">
-                                        <div class="like-area">
-                                            <a class ='like-button mr-2' type="submit" onclick=like(this)  data-listingid="{{each_listing._id}}" ><i class="fa fa-heart fa-2x" aria-hidden="true"></i></a>
-                                            <div class="like-counter"> {{each_listing.Likes}}</div>
-                                        </div>
                                     </div>
                                     <div class="media-body order-2 order-lg-1" onclick="window.location.href='{{ url_for('show_listing',listing_id = each_listing._id)}}'">
                                       <div class=" title-details">

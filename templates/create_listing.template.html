@@ -1,55 +1,158 @@
 {% extends 'base.template.html' %}
 
 {% block content %}
-{% if current_user.is_authenticated %}
-<div id="listing-area">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                <div class="card card-listing my-5">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">CREATE LISTING</h5>
-                        <form method="POST" class="listing-form">
-                            {%with%}
-                                {% if not previous_values %}
-                                    {% set previous_values = {} %}
-                                {% endif %}
-                                {% include 'forms/listing_form.template.html' %}
-                                <input type="submit" value="CREATE LISTING" class="btn btn-danger btn-block">
-                                <div class="text-center">
-                                    <a class="small" href="{{url_for('home')}}" style="color:inherit;">Back to Home</a></div>
-                            {% endwith %}
-                        </form>
-                    </div>
+<!-- Vertical Toolbar for the Users -->
+<div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+        <div class=" user d-flex align-items-center flex-column"><i class="fa fa-user fa-5x rounded-circle shadow-sm"></i>
+            <div class="user-body">
+                <h4 class="username">{{current_user.username}}</h4>
+            </div>
+        </div>
+
+    </div>
+
+
+    <p class="text-black font-weight-bold text-uppercase px-3 small pb-4 mb-0">User Menu</p>
+
+    <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item" id="navigation-links">
+            <a href="{{url_for('home')}}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+            <i class="fa fa-th-large fa-2x mr-4"></i>Home</a>
+        </li>
+        <li class="nav-item" id="navigation-links">
+          <a href="{{ url_for('marketplace') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+            <i class="fa fa-shopping-cart fa-2x mr-3" aria-hidden="true"></i>Marketplace</a>
+        </li>
+        <li class="nav-item" id="navigation-links">
+          <a href="{{ url_for('search') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+            <i class="fa fa-search fa-2x mr-3" aria-hidden="true"></i>Global Search</a>
+        </li>
+        {% if current_user.is_authenticated %}
+        <li class="nav-item" id="navigation-links">
+          <a href="{{url_for('show_user_profile')}}" class="nav-link text-dark bg-light" id="sidebar-nav-text">
+          <i class="fa fa-id-card fa-2x mr-3" aria-hidden="true"></i>My Profile</a>
+      </li>
+        <li class="nav-item" id="navigation-links">
+            <a href="{{ url_for('show_user_posts') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+              <i class="fa fa-sticky-note-o fa-2x mr-3" aria-hidden="true"></i>My Posts</a>
+                
+        </li>
+        <li class="nav-item" id="navigation-links">
+          <a href="{{ url_for('show_user_listings') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+            <i class="fa fa-list fa-2x mr-3" aria-hidden="true"></i>My Listings</a>
+        </li>
+        <li class="nav-item" id="navigation-links">
+          <a href="{{ url_for('create_post') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+              <i class="fa fa-pencil-square-o fa-2x mr-3" aria-hidden="true"></i>Create Post</a>
+        </li>
+        <li class="nav-item" id="navigation-links">
+          <a href="{{ url_for('create_listing') }}" class="nav-link text-dark  bg-light" id="sidebar-nav-text">
+            <i class="fa fa-tags fa-2x mr-3" aria-hidden="true"></i>Create Listing</a>
+        </li>
+        <li class="nav-item  px-3 small pb-4 mb-0" id="logout-area">
+            <a href="{{ url_for('logout') }}" class="btn btn-danger btn-lg btn-block">
+                Logout</a>
+        </li>
+        {% endif %}
+        {% if not current_user.is_authenticated %}
+        <li class="nav-item  px-3 small pb-4 mb-0" id="logout-area">
+          <a href="{{ url_for('login_user') }}" class="btn btn-success btn-lg btn-block">
+              Login</a>
+        </li>
+        {% endif %}
+    </ul>
+</div>
+
+<!-- Main Page -->
+<!-- Navigation Bar Top -->
+<div class="page-content" id="content">
+    <nav class="navbar navbar-expand-lg navbar-light  bg-light shadow-sm" id="main-navbar">
+        <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 d-inline-block align-top">
+            <i class="fa fa-user mr-3"></i><small class="text-uppercase font-weight-bold">{{current_user.username}}
+              {%if not current_user.is_authenticated%}
+                Anonymous
+              {%endif%}
+            </small></button>
+            
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('home')}}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('marketplace')}}">Marketplace</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark text-uppercase" id="nav-item-text" href="{{url_for('search')}}">Global Search</a>
+                    </li>
+                </ul>
+              </div>
+    </nav>
+
+    <!-- Hero Background with Hero Title -->
+    <div class="jumbotron jumbotron-fluid" id="jumbotron-background">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h1 class="title-hero-text text-uppercase">Timeless</h1>
                 </div>
             </div>
         </div>
     </div>
+  <!-- Posts Area -->
+   <div class="row" >
+        <div class="container-fluid" id="listing-area">
+            <div class="row">
+                {% if current_user.is_authenticated %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+                            <div class="card card-listing my-5">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">CREATE LISTING</h5>
+                                    <form method="POST" class="listing-form">
+                                        {%with%}
+                                            {% if not previous_values %}
+                                                {% set previous_values = {} %}
+                                            {% endif %}
+                                            {% include 'forms/listing_form.template.html' %}
+                                            <input type="submit" value="CREATE LISTING" class="btn btn-danger btn-block">
+                                        {% endwith %}
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+                <script type="text/javascript">
+                    var myWidget = cloudinary.createUploadWidget({
+                        cloudName: '{{cloud_name}}', 
+                        uploadPreset: '{{upload_preset}}'
+                    }, (error, result) => { 
+                            if (!error && result && result.event === "success") { 
+                                console.log(result);
+                                let assetId = result.info.asset_id;
+                                let fileURL = result.info.url;
+                                document.querySelector("#uploaded-file-url").value = fileURL;
+                                document.querySelector("#asset-id").value = assetId;
+            
+                            }
+                        }
+                    )
+            
+            document.getElementById("upload_widget").addEventListener("click", function(){
+                myWidget.open();
+            }, false);
+            
+                </script>
+                {% endif %}
+            </div>
+        </div>
+   </div>
 </div>
-
-
-
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
-	<script type="text/javascript">
-		var myWidget = cloudinary.createUploadWidget({
-            cloudName: '{{cloud_name}}', 
-            uploadPreset: '{{upload_preset}}'
-        }, (error, result) => { 
-                if (!error && result && result.event === "success") { 
-                    console.log(result);
-                    let assetId = result.info.asset_id;
-                    let fileURL = result.info.url;
-                    document.querySelector("#uploaded-file-url").value = fileURL;
-                    document.querySelector("#asset-id").value = assetId;
-
-                }
-            }
-        )
-
-document.getElementById("upload_widget").addEventListener("click", function(){
-    myWidget.open();
-  }, false);
-  
-    </script>
-{% endif %}
 {% endblock %}
