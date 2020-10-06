@@ -110,7 +110,7 @@ def register_user():
         errors = {}
 
         database_error = False
-
+        # Check if the user submitted an empty form
         if (fname or dob  or username or password or securityanswer) == "" or None:
             flash("Error: Invalid Registration Input",'danger')
             errors.update(invalid_registration="Please try again")
@@ -1171,4 +1171,4 @@ def search():
 if __name__ == "__main__":
     app.run(host=os.environ.get('IP'),
             port=int(os.environ.get('PORT')),
-            debug=True)
+            debug=False)
