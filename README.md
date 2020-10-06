@@ -64,8 +64,6 @@ Sequence of Navigation
 4. **Comments**
 - Only Registered Users will have the ability to create comments,edit and delete their own comments
 
-### Skeleton
-Wireframes used for the project can be found [here](readme/project_3.pdf)
 ### Surface
 Images used in the project were related to watches or community to promote a healthy and warm community of users interested in watches.
 
@@ -82,8 +80,6 @@ Fonts used such as Roboto, Ubuntu, Georgia and Verdana are used to contribute to
 -  Filter Buttons to sort Posts in either most recent or most popular based on vote count.
 -  Filter Buttons to sort Listings in either most recent or most popular based on likes
 -  Search bar at the navigation top bar used to search for post or listing title depending on whether is at the homepage or marketplace respectively.
-- Upvote and Downvote buttons to allow users to update the vote number of the posts 
-- Like button to allow users to update the like number of the listing
 - User Menu Navigation for users to navigate to different parts of the website at homepage or marketplace
 
 ### Features Left To Implement
@@ -93,8 +89,6 @@ Fonts used such as Roboto, Ubuntu, Georgia and Verdana are used to contribute to
 - Additional Sorting Features for listings such as sorting by price
 - Allow Users to share the posts or listings to social media platforms
 - Allow posts,comments and listings created by summernote to actually display the correct formatting without disrupting the overall page layout.
-- Allow users to upvote once or downvote once only. If the upvote button is clicked, the button should be disabled and the downvote button should only be allowed to click to change the vote count. Likewise for the downvote button, if the downvote button is clicked, the button should be disabled and the upvote button should only be allowed to click to change the vote count.
-- Allow users to only like once or remove the like
 
 ## Technologies Used
 - HTML 
