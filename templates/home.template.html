@@ -108,12 +108,11 @@
                 <div class="list-group-item" id="navigation-post-area">
                     <div class="filter-settings">
                         <h5 id="filter-text-recent" class="btn btn-lg btn-secondary mr-1 pt-1">Most Recent</h5>
-                        <h5 id="filter-text-popular"class="btn btn-lg btn-secondary pt-1"> Most Popular</h5>
                     </div>
                 </div>
                 <div class="posts-segment mx-auto" id="posts-area">
                     <ul class="list-group shadow">
-                      {% set sort_on = request.args.sort_on|default('Votes') %}
+                      {% set sort_on = request.args.sort_on|default('') %}
                         {% for each_post in posts|sort(attribute=sort_on, reverse= True) %}
                             <li class="list-group-item">
                                 <div class="media align-items-lg-center flex-column flex-lg-row p-3" >

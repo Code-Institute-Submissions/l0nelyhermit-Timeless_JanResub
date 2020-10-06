@@ -21,20 +21,12 @@ $('#filter-text-recent').click(function(event){
     window.location='/home?sort_on=Date_Posted'
 })
 
-$('#filter-text-popular').click(function(event){
-    event.preventDefault();
-    window.location='/home?sort_on=Votes'
-})
 // MarketPlace Filters
 $('#filter-text-recent-listings').click(function(event){
     event.preventDefault();
     window.location='/marketplace?sort_on=Date_Posted'
 })
 
-$('#filter-text-likes').click(function(event){
-    event.preventDefault();
-    window.location='/marketplace?sort_on=Likes'
-})
 
 
 
